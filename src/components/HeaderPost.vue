@@ -22,7 +22,6 @@ export default {
       editShow: false,
     };
   },
-
   methods: {
     showEditPopup() {
       this.editShow = true;

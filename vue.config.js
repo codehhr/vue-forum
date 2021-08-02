@@ -23,8 +23,12 @@ module.exports = {
             "text-color": "#4d698e",
             "border-color": "#4d698e",
             // 或者可以通过 less 文件覆盖（文件路径为绝对路径）
-            hack: `true; @import "your-less-file-path.less";`,
+            // hack: `true; @import "your-less-file-path.less";`,
+            "primary-color": "#4d698e", // 全局主色
+            "link-color": "#4d698e", // 链接色
+            "border-radius-base": "2px", // 组件/浮层圆角
           },
+          javascriptEnabled: true,
         },
       },
     },

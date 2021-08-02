@@ -41,3 +41,8 @@ export function register(loginName, password, userName, phonenumber, code) {
   formData.append("code", code);
   return axios.post(`/forum/api/registry`, formData);
 }
+
+// 获取注册验证码
+export function getCode(phonenumber) {
+  return axios.get(`/forum/api/short-message/vcode/${phonenumber}`);
+}

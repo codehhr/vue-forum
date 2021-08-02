@@ -26,7 +26,7 @@ export default {
 a {
   display: inline-block;
   text-decoration: none;
-  color: #42b983;
+  color: #4d698e;
 }
 
 ul {
@@ -46,9 +46,17 @@ img {
   i {
     color: #4d698e;
   }
+  .van-icon {
+    font-size: 1.6rem;
+  }
   .van-button {
     border: none;
     outline: none;
+  }
+  .login-form.ant-form {
+    input {
+      padding: 0 40px;
+    }
   }
 }
 </style>

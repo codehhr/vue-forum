@@ -3,9 +3,7 @@
     <van-cell class="nav-btn" @click="showNavPopup">
       <van-icon name="wap-nav" />
     </van-cell>
-    <van-popup class="nav-popup" position="left" v-model="navShow"
-      >内容</van-popup
-    >
+    <van-popup class="nav-popup" position="left" v-model="navShow"> </van-popup>
   </div>
 </template>
 

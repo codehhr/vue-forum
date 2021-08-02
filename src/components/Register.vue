@@ -8,7 +8,7 @@
             rules: [
               {
                 required: true,
-                message: 'Please input your username!',
+                message: '请输入您的用户名!',
               },
             ],
           },
@@ -25,7 +25,7 @@
             rules: [
               {
                 required: true,
-                message: 'Please input your password!',
+                message: '请输入您的密码!',
               },
               {
                 validator: validateToNextPassword,
@@ -46,7 +46,7 @@
             rules: [
               {
                 required: true,
-                message: 'Please confirm your password!',
+                message: '请确认您的密码!',
               },
               {
                 validator: compareToFirstPassword,
@@ -68,7 +68,7 @@
             rules: [
               {
                 required: true,
-                message: 'Please input your nickname!',
+                message: '请输入您的昵称!',
                 whitespace: true,
               },
             ],
@@ -85,9 +85,7 @@
         v-decorator="[
           'phonenumber',
           {
-            rules: [
-              { required: true, message: 'Please input your phone number!' },
-            ],
+            rules: [{ required: true, message: '请输入手机号!' }],
           },
         ]"
         style="width: 100%"
@@ -141,6 +139,7 @@
       <a-button type="primary" html-type="submit" class="register-form-btn">
         注册
       </a-button>
+      <router-link class="go-to-login" to="/login">去登录</router-link>
     </a-form-item>
   </a-form>
 </template>
@@ -290,6 +289,12 @@ export default {
   .register-form-btn {
     width: 100%;
     width: 100%;
+  }
+  .go-to-login {
+    margin-top: 20px;
+    width: 100%;
+    font-size: 1.1rem;
+    text-align: right;
   }
 }
 </style>

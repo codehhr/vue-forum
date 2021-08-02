@@ -30,3 +30,14 @@ export function forgetPassword(loginName, password, phonenumber, code) {
   formData.append("code", code);
   return axios.post("/forum/api/password/forget", formData);
 }
+
+// 注册
+export function register(loginName, password, userName, phonenumber, code) {
+  let formData = new FormData();
+  formData.append("loginName", loginName);
+  formData.append("password", password);
+  formData.append("userName", userName);
+  formData.append("phonenumber", phonenumber);
+  formData.append("code", code);
+  return axios.post(`/forum/api/registry`, formData);
+}

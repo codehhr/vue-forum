@@ -1,7 +1,7 @@
 <template>
   <a-form
     id="components-form-demo-normal-login"
-    :form="loginForm"
+    :form="form"
     class="login-form"
     @submit="handleLoginSubmit"
   >
@@ -68,7 +68,7 @@ export default {
   methods: {
     handleLoginSubmit(e) {
       e.preventDefault();
-      this.loginForm.validateFields((err, values) => {
+      this.form.validateFields((err, values) => {
         if (!err) {
           login(values.username, values.password)
             .then((res) => {
@@ -92,7 +92,7 @@ export default {
     },
   },
   beforeCreate() {
-    this.loginForm = this.$form.createForm(this, { name: "normal_login" });
+    this.form = this.$form.createForm(this, { name: "normal_login" });
   },
 };
 </script>

@@ -9,11 +9,6 @@
 <script>
 export default {
   name: "PageHeader",
-  data() {
-    return {};
-  },
-  methods: {},
-  components: {},
 };
 </script>
 

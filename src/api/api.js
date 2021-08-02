@@ -15,3 +15,8 @@ export function login(username, password) {
   formData.append("password", password);
   return axios.post("/forum/api/login", formData);
 }
+
+// 退出登录
+export function logOut() {
+  return axios.get("/forum/api/logout");
+}

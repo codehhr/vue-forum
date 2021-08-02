@@ -4,6 +4,15 @@
   </div>
 </template>
 
+<script>
+export default {
+  created() {
+    // 检查登录状态
+    this.$store.dispatch("checkAlreadyLogin");
+  },
+};
+</script>
+
 <style lang="less">
 * {
   margin: 0;

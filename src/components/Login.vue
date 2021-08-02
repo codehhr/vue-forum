@@ -72,9 +72,13 @@ export default {
         if (!err) {
           login(values.username, values.password)
             .then((res) => {
+              // 登录成功
               if (res.code === 0) {
                 this.$message.success("登录成功");
-                this.$store.commit("setLoginStatus", true);
+                this.$store.commit("setLoginStatus", {
+                  alreadyLogin: true,
+                  userInfo: res.data,
+                });
                 this.$router.push({ name: "index" });
               } else {
                 this.$message.warning("帐号或密码错误");

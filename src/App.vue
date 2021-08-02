@@ -37,5 +37,9 @@ img {
   i {
     color: #4d698e;
   }
+  .van-button {
+    border: none;
+    outline: none;
+  }
 }
 </style>

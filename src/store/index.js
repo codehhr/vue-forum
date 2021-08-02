@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import { getUserInfo } from "../api/api";
 
 Vue.use(Vuex);
 
@@ -21,6 +22,23 @@ export default new Vuex.Store({
       state.userInfo = payload.userInfo;
     },
   },
-  actions: {},
+  actions: {
+    // 检查登录状态
+    checkAlreadyLogin(context) {
+      getUserInfo().then((res) => {
+        if (res.code === 0) {
+          context.commit("setLoginStatus", {
+            alreadyLogin: true,
+            userInfo: res.data,
+          });
+        } else {
+          context.commit("setLoginStatus", {
+            alreadyLogin: false,
+            userInfo: null,
+          });
+        }
+      });
+    },
+  },
   modules: {},
 });

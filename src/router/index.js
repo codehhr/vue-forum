@@ -6,6 +6,7 @@ import Register from "../components/Register";
 import UserCenter from "../views/UserCenter";
 import Agreement from "../components/Agreement";
 import ForgetPassword from "../components/ForgetPassword";
+import HeaderPost from "../components/HeaderPost";
 import { getUserInfo } from "../api/api";
 
 Vue.use(VueRouter);
@@ -20,6 +21,14 @@ const routes = [
     path: "/login",
     name: "login",
     component: Login,
+  },
+  {
+    path: "/post",
+    name: "post",
+    component: HeaderPost,
+    meta: {
+      requireLogin: true,
+    },
   },
   {
     path: "/register",

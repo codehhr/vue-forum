@@ -46,3 +46,8 @@ export function register(loginName, password, userName, phonenumber, code) {
 export function getCode(phonenumber) {
   return axios.get(`/forum/api/short-message/vcode/${phonenumber}`);
 }
+
+// 获取登录用户个人信息
+export function getUserInfo() {
+  return axios.get("/forum/api/login-user/info");
+}

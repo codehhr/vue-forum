@@ -14,7 +14,7 @@ export default {
 
 <style scoped lang="less">
 .page-header {
-  padding: 0 10px;
+  padding: 0 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;

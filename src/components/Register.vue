@@ -1,151 +1,155 @@
 <template>
-  <a-form class="register-form" :form="form" @submit="handleRegisterSubmit">
-    <a-form-item v-bind="formItemLayout">
-      <a-input
-        v-decorator="[
-          'loginName',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入您的用户名!',
-              },
-            ],
-          },
-        ]"
-        placeholder="请输入用户名"
-        autocomplete
-      />
-    </a-form-item>
-    <a-form-item v-bind="formItemLayout" has-feedback>
-      <a-input
-        v-decorator="[
-          'password',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入您的密码!',
-              },
-              {
-                validator: validateToNextPassword,
-              },
-            ],
-          },
-        ]"
-        autocomplete
-        placeholder="请输入密码"
-        type="password"
-      />
-    </a-form-item>
-    <a-form-item v-bind="formItemLayout" has-feedback>
-      <a-input
-        v-decorator="[
-          'confirm',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请确认您的密码!',
-              },
-              {
-                validator: compareToFirstPassword,
-              },
-            ],
-          },
-        ]"
-        autocomplete
-        placeholder="请确认您的密码"
-        type="password"
-        @blur="handleConfirmBlur"
-      />
-    </a-form-item>
-    <a-form-item v-bind="formItemLayout">
-      <a-input
-        v-decorator="[
-          'userName',
-          {
-            rules: [
-              {
-                required: true,
-                message: '请输入您的昵称!',
-                whitespace: true,
-              },
-            ],
-          },
-        ]"
-        autocomplete
-        placeholder="请输入昵称"
-      />
-    </a-form-item>
-    <a-form-item v-bind="formItemLayout">
-      <a-input
-        autocomplete
-        placeholder="请输入手机号"
-        v-decorator="[
-          'phonenumber',
-          {
-            rules: [{ required: true, message: '请输入手机号!' }],
-          },
-        ]"
-        style="width: 100%"
-      >
-        <a-select
-          slot="addonBefore"
-          v-decorator="['prefix', { initialValue: '86' }]"
-          style="width: 70px"
+  <div class="register">
+    <go-home></go-home>
+    <a-form class="register-form" :form="form" @submit="handleRegisterSubmit">
+      <a-form-item v-bind="formItemLayout">
+        <a-input
+          v-decorator="[
+            'loginName',
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入您的用户名!',
+                },
+              ],
+            },
+          ]"
+          placeholder="请输入用户名"
+          autocomplete
+        />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" has-feedback>
+        <a-input
+          v-decorator="[
+            'password',
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入您的密码!',
+                },
+                {
+                  validator: validateToNextPassword,
+                },
+              ],
+            },
+          ]"
+          autocomplete
+          placeholder="请输入密码"
+          type="password"
+        />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout" has-feedback>
+        <a-input
+          v-decorator="[
+            'confirm',
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请确认您的密码!',
+                },
+                {
+                  validator: compareToFirstPassword,
+                },
+              ],
+            },
+          ]"
+          autocomplete
+          placeholder="请确认您的密码"
+          type="password"
+          @blur="handleConfirmBlur"
+        />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout">
+        <a-input
+          v-decorator="[
+            'userName',
+            {
+              rules: [
+                {
+                  required: true,
+                  message: '请输入您的昵称!',
+                  whitespace: true,
+                },
+              ],
+            },
+          ]"
+          autocomplete
+          placeholder="请输入昵称"
+        />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout">
+        <a-input
+          autocomplete
+          placeholder="请输入手机号"
+          v-decorator="[
+            'phonenumber',
+            {
+              rules: [{ required: true, message: '请输入手机号!' }],
+            },
+          ]"
+          style="width: 100%"
         >
-          <a-select-option value="86">
-            +86
-          </a-select-option>
-          <a-select-option value="87">
-            +87
-          </a-select-option>
-        </a-select>
-      </a-input>
-    </a-form-item>
-    <a-form-item v-bind="formItemLayout">
-      <a-row :gutter="24">
-        <a-col :span="16">
-          <a-input
-            v-decorator="[
-              'code',
-              {
-                rules: [
-                  {
-                    message: '请输入验证码!',
-                  },
-                ],
-              },
-            ]"
-            autocomplete
-            placeholder="请输入验证码"
-            title="请输入验证码"
-          />
-        </a-col>
-        <a-col :span="8">
-          <a-button
-            :disabled="registerCodeBtnDisabled"
-            class="get-code"
-            @click="getRegisterCode"
+          <a-select
+            slot="addonBefore"
+            v-decorator="['prefix', { initialValue: '86' }]"
+            style="width: 70px"
           >
-            <span v-show="!hadRequestRegisterCode">获取验证码</span>
-            <span v-show="hadRequestRegisterCode">{{ registerSecond }}</span>
-          </a-button>
-        </a-col>
-      </a-row>
-    </a-form-item>
-    <a-form-item v-bind="tailFormItemLayout">
-      <a-button type="primary" html-type="submit" class="register-form-btn">
-        注册
-      </a-button>
-      <router-link class="go-to-login" to="/login">去登录</router-link>
-    </a-form-item>
-  </a-form>
+            <a-select-option value="86">
+              +86
+            </a-select-option>
+            <a-select-option value="87">
+              +87
+            </a-select-option>
+          </a-select>
+        </a-input>
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout">
+        <a-row :gutter="24">
+          <a-col :span="16">
+            <a-input
+              v-decorator="[
+                'code',
+                {
+                  rules: [
+                    {
+                      message: '请输入验证码!',
+                    },
+                  ],
+                },
+              ]"
+              autocomplete
+              placeholder="请输入验证码"
+              title="请输入验证码"
+            />
+          </a-col>
+          <a-col :span="8">
+            <a-button
+              :disabled="registerCodeBtnDisabled"
+              class="get-code"
+              @click="getRegisterCode"
+            >
+              <span v-show="!hadRequestRegisterCode">获取验证码</span>
+              <span v-show="hadRequestRegisterCode">{{ registerSecond }}</span>
+            </a-button>
+          </a-col>
+        </a-row>
+      </a-form-item>
+      <a-form-item v-bind="tailFormItemLayout">
+        <a-button type="primary" html-type="submit" class="register-form-btn">
+          注册
+        </a-button>
+        <router-link class="go-to-login" to="/login">去登录</router-link>
+      </a-form-item>
+    </a-form>
+  </div>
 </template>
 
 <script>
 import { register, getCode } from "../api/api";
+import GoHome from "../components/GoHome";
 
 export default {
   name: "Register",
@@ -274,6 +278,9 @@ export default {
 
     // 注册 end
   },
+  components: {
+    GoHome,
+  },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "register" });
   },
@@ -282,7 +289,7 @@ export default {
 
 <style scoped lang="less">
 .register-form {
-  padding: 40px;
+  padding: 10px 40px;
   .get-code {
     width: 100%;
   }

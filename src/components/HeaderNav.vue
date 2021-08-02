@@ -3,11 +3,26 @@
     <van-cell class="nav-btn" @click="showNavPopup">
       <van-icon name="wap-nav" />
     </van-cell>
-    <van-popup class="nav-popup" position="left" v-model="navShow"> </van-popup>
+    <!-- 左侧弹出框 start -->
+    <van-popup class="nav-popup" position="left" v-model="navShow">
+      <!-- 搜索组件 -->
+      <search></search>
+
+      <!-- 登录注册入口组件 -->
+      <signin-entrance></signin-entrance>
+
+      <!-- 个人中心入口组件 -->
+      <user-entrance></user-entrance>
+    </van-popup>
+    <!-- 左侧弹出框 end -->
   </div>
 </template>
 
 <script>
+import Search from "../components/Search";
+import SigninEntrance from "../components/SigninEntrance";
+import UserEntrance from "../components/UserEntrance";
+
 export default {
   name: "HeaderNav",
   data() {
@@ -19,6 +34,14 @@ export default {
     showNavPopup() {
       this.navShow = true;
     },
+    onSearch(v) {
+      console.log(v);
+    },
+  },
+  components: {
+    Search,
+    SigninEntrance,
+    UserEntrance,
   },
 };
 </script>
@@ -31,8 +54,13 @@ export default {
     height: 100%;
   }
   .nav-popup {
-    width: 50%;
+    padding: 20px;
+    width: 60%;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
   }
 }
 </style>

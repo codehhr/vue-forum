@@ -13,7 +13,9 @@
 
       <!-- 发表新帖 -->
       <template v-slot:right>
-        <header-post></header-post>
+        <router-link to="/post">
+          <van-icon name="edit" />
+        </router-link>
       </template>
     </page-header>
   </div>
@@ -22,7 +24,6 @@
 <script>
 import PageHeader from "../components/PageHeader";
 import HeaderNav from "../components/HeaderNav";
-import HeaderPost from "../components/HeaderPost";
 import SwitchTopics from "../components/SwitchTopics";
 
 export default {
@@ -33,10 +34,9 @@ export default {
   components: {
     PageHeader,
     HeaderNav,
-    HeaderPost,
-    SwitchTopics
+    SwitchTopics,
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="less"></style>

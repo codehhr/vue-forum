@@ -283,7 +283,7 @@ export default {
 
 <style scoped lang="less">
 .register-form {
-  padding: 20px;
+  padding: 40px;
   .get-code {
     width: 100%;
   }

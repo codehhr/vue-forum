@@ -11,7 +11,7 @@ export default new Vuex.Store({
     // 登录状态
     alreadyLogin: false,
     // 用户信息
-    userInfo: {},
+    userInfo: null,
   },
   mutations: {
     setCategory(state, payload) {
@@ -26,7 +26,6 @@ export default new Vuex.Store({
     // 检查登录状态
     checkAlreadyLogin(context) {
       getUserInfo().then((res) => {
-        console.log(res);
         if (res.code === 0) {
           context.commit("setLoginStatus", {
             alreadyLogin: true,

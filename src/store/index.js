@@ -9,13 +9,16 @@ export default new Vuex.Store({
     category: null,
     // 登录状态
     alreadyLogin: false,
+    // 用户信息
+    userInfo: null,
   },
   mutations: {
     setCategory(state, payload) {
       state.category = payload;
     },
     setLoginStatus(state, payload) {
-      state.alreadyLogin = payload;
+      state.alreadyLogin = payload.alreadyLogin;
+      state.userInfo = payload.userInfo;
     },
   },
   actions: {},

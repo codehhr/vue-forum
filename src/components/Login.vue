@@ -55,7 +55,9 @@
       <router-link class="register-right-now" to="/register"
         >立即注册</router-link
       >
-      <router-link class="forgot-password" to="">忘记密码</router-link>
+      <router-link class="forgot-password" to="/forget-password"
+        >忘记密码</router-link
+      >
     </div>
   </a-form>
 </template>

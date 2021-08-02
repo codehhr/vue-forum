@@ -1,20 +1,13 @@
 <template>
   <div class="header-post">
-    <van-cell class="edit-btn" @click="showEditPopup">
-      <van-icon name="edit" />
-    </van-cell>
-    <van-popup
-      class="edit-popup"
-      closeable
-      close-icon-position="top-left"
-      position="top"
-      v-model="editShow"
-      >内容</van-popup
-    >
+    <mavon-editor />
   </div>
 </template>
 
 <script>
+import { mavonEditor } from "mavon-editor";
+import "mavon-editor/dist/css/index.css";
+
 export default {
   name: "HeaderPost",
   data() {
@@ -26,6 +19,9 @@ export default {
     showEditPopup() {
       this.editShow = true;
     },
+  },
+  components: {
+    mavonEditor,
   },
 };
 </script>

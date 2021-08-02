@@ -20,3 +20,13 @@ export function login(username, password) {
 export function logOut() {
   return axios.get("/forum/api/logout");
 }
+
+// 忘记密码
+export function forgetPassword(loginName, password, phonenumber, code) {
+  let formData = new FormData();
+  formData.append("loginName", loginName);
+  formData.append("password", password);
+  formData.append("phonenumber", phonenumber);
+  formData.append("code", code);
+  return axios.post("/forum/api/password/forget", formData);
+}

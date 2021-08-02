@@ -1,27 +1,29 @@
 <template>
-  <div>
-    <!-- 左侧导航 -->
-    <header-nav></header-nav>
-    <!-- 切换论题 -->
-    <switch-topics></switch-topics>
-    <!-- 发表新帖 -->
-    <header-post></header-post>
+  <div class="page-header">
+    <slot name="left"></slot>
+    <slot name="center"></slot>
+    <slot name="right"></slot>
   </div>
 </template>
 
 <script>
-import HeaderNav from "./HeaderNav";
-import HeaderPost from "./HeaderPost";
-import SwitchTopics from "./SwitchTopics";
-
 export default {
   name: "PageHeader",
-  components: {
-    HeaderNav,
-    HeaderPost,
-    SwitchTopics,
+  data() {
+    return {};
   },
+  methods: {},
+  components: {},
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.page-header {
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 46px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+</style>

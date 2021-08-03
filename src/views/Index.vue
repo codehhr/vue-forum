@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- 顶部 start -->
     <page-header>
       <!-- 左侧导航 -->
       <template v-slot:left>
@@ -18,6 +19,11 @@
         </router-link>
       </template>
     </page-header>
+    <!-- 顶部 end -->
+
+    <!-- 帖子列表 start -->
+    <post-list></post-list>
+    <!-- 帖子列表 end -->
   </div>
 </template>
 
@@ -25,6 +31,7 @@
 import PageHeader from "../components/PageHeader";
 import HeaderNav from "../components/HeaderNav";
 import SwitchTopics from "../components/SwitchTopics";
+import PostList from "../components/PostList";
 
 export default {
   name: "Index",
@@ -35,6 +42,7 @@ export default {
     PageHeader,
     HeaderNav,
     SwitchTopics,
+    PostList,
   },
 };
 </script>

@@ -16,6 +16,10 @@ Vue.use(VanImage);
 import { Lazyload } from "vant";
 Vue.use(Lazyload);
 
+// Dialog
+import { Dialog } from "vant";
+Vue.use(Dialog);
+
 Vue.use(Vant);
 Vue.use(Antd);
 

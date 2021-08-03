@@ -73,8 +73,13 @@ export default {
 
 .user-entrance {
   width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
   .go-to-user {
+    width: 100%;
+    height: 100%;
     > div {
+      padding: 0 10px;
       width: 100%;
       display: flex;
       align-items: center;

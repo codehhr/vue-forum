@@ -51,3 +51,12 @@ export function getCode(phonenumber) {
 export function getUserInfo() {
   return axios.get("/forum/api/login-user/info");
 }
+
+// 请求帖子列表
+export function getPostList(categoryId = 2, pageNum = 1, pageSize = 20) {
+  let formData = new FormData();
+  formData.append("categoryId", categoryId);
+  formData.append("pageNum", pageNum);
+  formData.append("pageSize", pageSize);
+  return axios.post("/forum/api/bbs/bbsPosts/open/list", formData);
+}

@@ -50,6 +50,7 @@ img {
     font-size: 1.6rem;
   }
   .van-button {
+    color: #4d698e;
     border: none;
     outline: none;
   }
@@ -57,6 +58,12 @@ img {
     input {
       padding: 0 40px;
     }
+  }
+  .van-cell {
+    padding: 0;
+  }
+  .van-button--normal {
+    padding: 0;
   }
 }
 </style>

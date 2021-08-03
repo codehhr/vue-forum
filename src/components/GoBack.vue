@@ -1,6 +1,7 @@
 <template>
-  <div @click="goBack" class="go-back">
-    <van-button class="go-back-btn" icon="arrow-left" />
+  <div class="go-back">
+    <van-button @click="goBack" class="go-back-btn" icon="arrow-left" />
+    <slot name="publish"></slot>
   </div>
 </template>
 
@@ -21,7 +22,7 @@ export default {
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 46px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   .go-back-btn {

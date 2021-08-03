@@ -7,21 +7,31 @@ import UserCenter from "../views/UserCenter";
 import Agreement from "../components/Agreement";
 import ForgetPassword from "../components/ForgetPassword";
 import HeaderPost from "../components/HeaderPost";
+import AboutMe from "../components/AboutMe";
 import { getUserInfo } from "../api/api";
 
 Vue.use(VueRouter);
 
 const routes = [
+  // 首页
   {
     path: "/",
     name: "index",
     component: Index,
   },
+  // 登录
   {
     path: "/login",
     name: "login",
     component: Login,
   },
+  // 注册
+  {
+    path: "/register",
+    name: "register",
+    component: Register,
+  },
+  // 发表新帖
   {
     path: "/post",
     name: "post",
@@ -30,11 +40,7 @@ const routes = [
       requireLogin: true,
     },
   },
-  {
-    path: "/register",
-    name: "register",
-    component: Register,
-  },
+  // 个人中心
   {
     path: "/user",
     name: "user",
@@ -52,6 +58,14 @@ const routes = [
     path: "/forget-password",
     name: "forgetPassword",
     component: ForgetPassword,
+  },
+  {
+    path: "/about",
+    name: "about",
+    component: AboutMe,
+    meta: {
+      requireLogin: true,
+    },
   },
 ];
 

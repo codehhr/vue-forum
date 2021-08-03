@@ -66,6 +66,9 @@ export default {
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
+    > div {
+      height: 46px;
+    }
   }
 }
 </style>

@@ -160,7 +160,6 @@ export default {
             values.phonenumber,
             values.code
           ).then((res) => {
-            console.log(res);
             if (res.code === 0) {
               this.$router.push({ name: "login" });
               this.$message.success("操作成功,现在可以登录啦~");
@@ -172,10 +171,6 @@ export default {
       });
     },
 
-    handleConfirmBlur(e) {
-      const value = e.target.value;
-      this.confirmDirty = this.confirmDirty || !!value;
-    },
     // 获取验证码
     getForgetPasswordCode() {
       let that = this;

@@ -14,6 +14,8 @@ export default new Vuex.Store({
     alreadyLogin: false,
     // 用户信息
     userInfo: null,
+    // Notificate
+    hasNotificate: false,
   },
   mutations: {
     setCategory(state, payload) {
@@ -23,6 +25,9 @@ export default new Vuex.Store({
     setLoginStatus(state, payload) {
       state.alreadyLogin = payload.alreadyLogin;
       state.userInfo = payload.userInfo;
+    },
+    setNotificate(state, payload) {
+      state.hasNotificate = payload;
     },
   },
   actions: {

@@ -25,7 +25,6 @@
         <a-upload
           name="avatarfile"
           action="/forum/api/system/user/profile/update/avatar/nos"
-          :headers="headers"
           @change="handleChange"
           :showUploadList="false"
         >
@@ -51,11 +50,7 @@ import GoHome from "../components/GoHome";
 export default {
   name: "UserCenter",
   data() {
-    return {
-      headers: {
-        // authorization: "authorization-text",
-      },
-    };
+    return {};
   },
   methods: {
     // 更改头像

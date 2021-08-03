@@ -69,7 +69,7 @@ export default {
 
 <style scoped lang="less">
 @text-color: #667c99;
-@font-size: 1.1rem;
+@font-size: 0.9rem;
 
 .user-entrance {
   width: 100%;

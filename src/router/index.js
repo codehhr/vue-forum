@@ -9,7 +9,6 @@ import ForgetPassword from "../components/ForgetPassword";
 import HeaderPost from "../components/HeaderPost";
 import AboutMe from "../components/AboutMe";
 import postDetail from "../components/PostDetail";
-
 import { getUserInfo } from "../api/api";
 
 Vue.use(VueRouter);
@@ -51,16 +50,19 @@ const routes = [
       requireLogin: true,
     },
   },
+  // 协议
   {
     path: "/agreement",
     name: "agreement",
     component: Agreement,
   },
+  // 忘记密码
   {
     path: "/forget-password",
     name: "forgetPassword",
     component: ForgetPassword,
   },
+  // 关于我的
   {
     path: "/about",
     name: "about",
@@ -69,6 +71,7 @@ const routes = [
       requireLogin: true,
     },
   },
+  // 帖子详情页
   {
     path: "/postDetail/:postsId",
     name: "postDetail",

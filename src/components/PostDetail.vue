@@ -1,14 +1,20 @@
 <template>
-  <div class="post-detail">
+  <div class="postdetail">
     <go-home></go-home>
-    <div class="post-detail-header"></div>
-    <div class="post-detail-body"></div>
-    <div class="post-detail-comments"></div>
+    <!-- 公告 -->
+    <announcement></announcement>
+    <div class="post-detail">
+      <div class="post-detail-header"></div>
+      <div class="post-detail-body"></div>
+      <div class="post-detail-comments"></div>
+    </div>
   </div>
 </template>
 
 <script>
 import GoHome from "../components/GoHome";
+import Announcement from "../components/Announcement";
+
 export default {
   name: "PostDetail",
   methods: {
@@ -18,6 +24,7 @@ export default {
   },
   components: {
     GoHome,
+    Announcement,
   },
   created() {
     this.renderData();

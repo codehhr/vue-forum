@@ -12,7 +12,31 @@
 <script>
 export default {
   name: "Search",
+  methods: {
+    onSearch(v) {
+      console.log(v);
+    },
+  },
 };
 </script>
 
-<style scoped></style>
+<style scoped lang="less">
+.search-keyword {
+  margin: 0;
+  width: 100% !important;
+}
+</style>
+<style lang="less">
+@text-color: #667c99;
+@input-bg-color: #e8ecf3;
+
+.search-keyword {
+  .ant-input {
+    border: none;
+    background-color: @input-bg-color;
+    &::placeholder {
+      color: @text-color;
+    }
+  }
+}
+</style>

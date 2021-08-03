@@ -137,6 +137,20 @@
           </a-col>
         </a-row>
       </a-form-item>
+      <a-form-item v-bind="formItemLayout">
+        <a-input
+          v-decorator="['sex', {}]"
+          placeholder="请输入性别 ( 男 0 , 女 1 ) (可选)"
+          autocomplete
+        />
+      </a-form-item>
+      <a-form-item v-bind="formItemLayout">
+        <a-input
+          v-decorator="['remark', {}]"
+          placeholder="请输入个性签名 (可选)"
+          autocomplete
+        />
+      </a-form-item>
       <a-form-item v-bind="tailFormItemLayout">
         <a-button type="primary" html-type="submit" class="register-form-btn">
           注册
@@ -201,9 +215,10 @@ export default {
             values.password,
             values.userName,
             values.phonenumber,
-            values.code
+            values.code,
+            values.sex,
+            values.remark
           ).then((res) => {
-            console.log(res);
             if (res.code === 0) {
               this.$router.push({ name: "login" });
               this.$message.success("注册成功,现在可以登录啦~");

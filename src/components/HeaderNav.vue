@@ -53,6 +53,7 @@ export default {
 
 <style scoped lang="less">
 .header-nav {
+  user-select: none;
   .nav-btn {
     padding: 0;
     font-size: 1.6rem;

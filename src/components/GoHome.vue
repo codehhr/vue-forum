@@ -14,7 +14,6 @@ export default {
 
 <style lang="less" scoped>
 .go-home {
-  margin-bottom: 10px;
   padding: 0 20px;
   width: 100%;
   display: flex;

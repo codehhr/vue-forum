@@ -11,8 +11,11 @@
       <!-- 登录注册入口组件 -->
       <signin-entrance></signin-entrance>
 
+      <!-- 关于我的 -->
+      <about-entrance></about-entrance>
+
       <!-- 个人中心入口组件 -->
-      <user-entrance></user-entrance>
+      <user-entrance @requestClosePopup="closePopup"></user-entrance>
     </van-popup>
     <!-- 左侧弹出框 end -->
   </div>
@@ -22,6 +25,7 @@
 import Search from "../components/Search";
 import SigninEntrance from "../components/SigninEntrance";
 import UserEntrance from "../components/UserEntrance";
+import AboutEntrance from "../components/AboutEntrance";
 
 export default {
   name: "HeaderNav",
@@ -34,14 +38,15 @@ export default {
     showNavPopup() {
       this.navShow = true;
     },
-    onSearch(v) {
-      console.log(v);
+    closePopup(data) {
+      this.navShow = data;
     },
   },
   components: {
     Search,
     SigninEntrance,
     UserEntrance,
+    AboutEntrance,
   },
 };
 </script>
@@ -54,12 +59,12 @@ export default {
     height: 100%;
   }
   .nav-popup {
-    padding: 20px;
+    padding: 20px 10px;
     width: 60%;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
   }
 }

@@ -1,19 +1,17 @@
 <template>
-  <div class="signin-entrance">
-    <div v-show="!alreadyLogin" class="entrance">
-      <!-- 登录 -->
-      <div class="login">
-        <router-link to="/login">
-          <van-button class="login-btn">登录</van-button>
-        </router-link>
-      </div>
+  <div v-show="!alreadyLogin" class="signin-entrance">
+    <!-- 登录 -->
+    <div class="login">
+      <router-link to="/login">
+        <van-button class="login-btn">登录</van-button>
+      </router-link>
+    </div>
 
-      <!-- 注册 -->
-      <div class="register">
-        <router-link to="/register">
-          <van-button class="register-btn">注册</van-button>
-        </router-link>
-      </div>
+    <!-- 注册 -->
+    <div class="register">
+      <router-link to="/register">
+        <van-button class="register-btn">注册</van-button>
+      </router-link>
     </div>
   </div>
 </template>
@@ -34,7 +32,7 @@ export default {
 <style scoped lang="less">
 @main-color: #4d698e;
 
-.entrance {
+.signin-entrance {
   margin-top: 10px;
   width: 100%;
   display: flex;

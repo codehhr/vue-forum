@@ -32,13 +32,23 @@ export function forgetPassword(loginName, password, phonenumber, code) {
 }
 
 // 注册
-export function register(loginName, password, userName, phonenumber, code) {
+export function register(
+  loginName,
+  password,
+  userName,
+  phonenumber,
+  code,
+  sex,
+  remark
+) {
   let formData = new FormData();
   formData.append("loginName", loginName);
   formData.append("password", password);
   formData.append("userName", userName);
   formData.append("phonenumber", phonenumber);
   formData.append("code", code);
+  formData.append("sex", sex);
+  formData.append("remark", remark);
   return axios.post(`/forum/api/registry`, formData);
 }
 
@@ -50,6 +60,17 @@ export function getCode(phonenumber) {
 // 获取登录用户个人信息
 export function getUserInfo() {
   return axios.get("/forum/api/login-user/info");
+}
+
+// 修改个人信息
+export function modifyUserInfo(userName, email, phonenumber, sex, remark) {
+  let formData = new FormData();
+  formData.append("userName", userName);
+  formData.append("email", email);
+  formData.append("phonenumber", phonenumber);
+  formData.append("sex", sex);
+  formData.append("remark", remark);
+  return axios.post("/forum/api/system/user/profile/update", formData);
 }
 
 // 请求帖子列表

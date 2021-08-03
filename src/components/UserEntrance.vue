@@ -16,9 +16,9 @@
       <span>个人中心</span>
     </van-cell>
     <van-popup class="user-popup" position="bottom" v-model="userShow">
-      <div class="setting" @click="goToUserCenter">
-        <a-icon type="setting" />
-        <span>进入个人中心</span>
+      <div class="user" @click="goToUserCenter">
+        <a-icon type="user" />
+        <span>个人主页</span>
       </div>
       <div class="logout" @click="requestLogOut">
         <a-icon type="logout" />

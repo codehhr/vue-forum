@@ -92,7 +92,7 @@ export default {
       }
       span {
         margin: 0 10px;
-        line-height: 36px;
+        font-size: 1rem;
         color: @text-color;
       }
     }

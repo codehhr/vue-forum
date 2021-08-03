@@ -8,6 +8,8 @@ import Agreement from "../components/Agreement";
 import ForgetPassword from "../components/ForgetPassword";
 import HeaderPost from "../components/HeaderPost";
 import AboutMe from "../components/AboutMe";
+import postDetail from "../components/PostDetail";
+
 import { getUserInfo } from "../api/api";
 
 Vue.use(VueRouter);
@@ -66,6 +68,11 @@ const routes = [
     meta: {
       requireLogin: true,
     },
+  },
+  {
+    path: "/postDetail/:postsId",
+    name: "postDetail",
+    component: postDetail,
   },
 ];
 

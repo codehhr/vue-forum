@@ -1,35 +1,45 @@
 <template>
-  <div class="post-list">
-    <van-pull-refresh
-      class="pull-refresh"
-      :head-height="80"
-      v-model="isLoading"
-      @refresh="onRefresh"
-    >
-      <!-- 下拉提示 , 通过 scale 实现一个缩放效果 -->
-      <template #pulling="props">
-        <img
-          class="doge"
-          src="https://img01.yzcdn.cn/vant/doge.png"
-          :style="{ transform: `scale(${props.distance / 80})` }"
-        />
-      </template>
+  <div class="postlist">
+    <!-- post-list -->
+    <div class="post-list">
+      <van-pull-refresh
+        class="pull-refresh"
+        :head-height="80"
+        v-model="isLoading"
+        @refresh="onRefresh"
+      >
+        <!-- 公告 -->
+        <announcement>
+          <template v-slot:title>
+            <div>
+              <h2>亿个人论坛</h2>
+            </div>
+          </template>
+        </announcement>
+        <!-- 下拉提示 , 通过 scale 实现一个缩放效果 -->
+        <template #pulling="props">
+          <img
+            class="doge"
+            src="https://img01.yzcdn.cn/vant/doge.png"
+            :style="{ transform: `scale(${props.distance / 80})` }"
+          />
+        </template>
 
-      <!-- 释放提示 -->
-      <template #loosing>
-        <img class="doge" src="https://img01.yzcdn.cn/vant/doge.png" />
-      </template>
+        <!-- 释放提示 -->
+        <template #loosing>
+          <img class="doge" src="https://img01.yzcdn.cn/vant/doge.png" />
+        </template>
 
-      <!-- 加载提示 -->
-      <template #loading>
-        <img class="doge" src="https://img01.yzcdn.cn/vant/doge-fire.jpg" />
-      </template>
+        <!-- 加载提示 -->
+        <template #loading>
+          <img class="doge" src="https://img01.yzcdn.cn/vant/doge-fire.jpg" />
+        </template>
 
-      <!-- post-content start -->
-      <!-- ******************************************************
+        <!-- post-content start -->
+        <!-- ******************************************************
         分页版 start
        ****************************************************** -->
-      <!-- <a-list
+        <!-- <a-list
         item-layout="vertical"
         size="large"
         :pagination="pagination"
@@ -56,70 +66,72 @@
           {{ item.content }}
         </a-list-item>
       </a-list> -->
-      <!-- ******************************************************
+        <!-- ******************************************************
         分页版 end
        ****************************************************** -->
-      <!-- post-content end -->
+        <!-- post-content end -->
 
-      <!-- 触底加载版 start -->
-      <a-list
-        class="demo-loadmore-list"
-        :loading="loading"
-        item-layout="horizontal"
-        :data-source="postList"
-      >
-        <div
-          v-if="showLoadingMore"
-          slot="loadMore"
-          :style="{
-            textAlign: 'center',
-            marginTop: '12px',
-            height: '32px',
-            lineHeight: '32px',
-          }"
+        <!-- 触底加载版 start -->
+        <a-list
+          class="demo-loadmore-list"
+          :loading="loading"
+          item-layout="horizontal"
+          :data-source="postList"
         >
-          <a-spin v-if="loadingMore" />
-          <a-button v-else @click="onLoadMore">加载更多</a-button>
-        </div>
-        <a-list-item loading="true" slot="renderItem" slot-scope="item">
-          <router-link
-            class="go-to-post-detail"
-            :to="{ name: 'postDetail', params: { postsId: item.postsId } }"
+          <div
+            v-if="showLoadingMore"
+            slot="loadMore"
+            :style="{
+              textAlign: 'center',
+              marginTop: '12px',
+              height: '32px',
+              lineHeight: '32px',
+            }"
           >
-            <div class="post-item-content">
-              <a-avatar
-                class="post-item-avatar"
-                slot="avatar"
-                :src="item.avatar"
-              />
-              <div class="post-item-middle">
-                <div class="title">{{ item.title }}</div>
-                <div class="des">
-                  <div class="des-intro">
-                    <div class="intro">{{ item.intro }}</div>
-                    <van-image
-                      class="cover"
-                      :src="item.coverImgUrl"
-                      :alt="item.title"
-                      lazy-load
-                    />
+            <a-spin v-if="loadingMore" />
+            <a-button v-else @click="onLoadMore">加载更多</a-button>
+          </div>
+          <a-list-item loading="true" slot="renderItem" slot-scope="item">
+            <router-link
+              class="go-to-post-detail"
+              :to="{ name: 'postDetail', params: { postsId: item.postsId } }"
+            >
+              <div class="post-item-content">
+                <a-avatar
+                  class="post-item-avatar"
+                  slot="avatar"
+                  :src="item.avatar"
+                />
+                <div class="post-item-middle">
+                  <div class="title">{{ item.title }}</div>
+                  <div class="des">
+                    <div class="des-intro">
+                      <div class="intro">{{ item.intro }}</div>
+                      <van-image
+                        class="cover"
+                        :src="item.coverImgUrl"
+                        :alt="item.title"
+                        lazy-load
+                      />
+                    </div>
+                    <p class="sendtime">{{ item.sendTime }}</p>
                   </div>
-                  <p class="sendtime">{{ item.sendTime }}</p>
                 </div>
+                <div class="readnum">{{ item.readNum }}</div>
               </div>
-              <div class="readnum">{{ item.readNum }}</div>
-            </div>
-          </router-link>
-        </a-list-item>
-      </a-list>
-      <!-- 触底加载版 end -->
-    </van-pull-refresh>
+            </router-link>
+          </a-list-item>
+        </a-list>
+        <!-- 触底加载版 end -->
+      </van-pull-refresh>
+    </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import { getPostList } from "../api/api";
+import Announcement from "../components/Announcement";
 // getPostList(categoryId = 2, pageNum = 1, pageSize = 20)
 
 export default {
@@ -127,7 +139,7 @@ export default {
   data() {
     return {
       postList: [],
-      /* 
+      /*
         分页版
        */
       // pagination: {
@@ -186,15 +198,21 @@ export default {
         });
       });
     },
+    getPostsList() {
+      getPostList(2, this.pageNum, this.pageSize).then((res) => {
+        if (res.code === 0) {
+          this.postList = res.rows;
+        } else {
+          this.$message.warning(res.msg);
+        }
+      });
+    },
+  },
+  components: {
+    Announcement,
   },
   created() {
-    getPostList(2, this.pageNum, this.pageSize).then((res) => {
-      if (res.code === 0) {
-        this.postList = res.rows;
-      } else {
-        this.$message.warning(res.msg);
-      }
-    });
+    this.getPostsList();
     this.loading = false;
   },
   computed: {
@@ -207,7 +225,7 @@ export default {
 
 <style scoped lang="less">
 .post-list {
-  padding: 12px;
+  // padding: 12px;
   height: calc(100vh - 46px);
   overflow: hidden;
   .pull-refresh {
@@ -241,6 +259,7 @@ export default {
   // 每一项
   .ant-list-item {
     .go-to-post-detail {
+      padding: 12px;
       width: 100%;
       .post-item-content {
         width: 100%;

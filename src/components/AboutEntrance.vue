@@ -27,10 +27,13 @@ export default {
 @main-color: #4d698e;
 
 .about-me-entrance {
+  padding: 0 10px;
+  border-radius: 20px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  overflow: hidden;
   &:active {
     background-color: #e8ecf3;
   }

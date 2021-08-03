@@ -237,9 +237,9 @@ export default {
 
 <style lang="less">
 @main-bg-color: #e8ecf3;
-@font-size: 1rem;
-@intro-font-size: 0.8rem;
-@intro-color: #aaaaaa;
+@font-size: 1.2rem;
+@intro-font-size: 1.1rem;
+@intro-color: #666666;
 
 // 自定义刷新
 .doge {
@@ -274,7 +274,7 @@ export default {
         }
         // 中间部分
         .post-item-middle {
-          margin: 0 10px;
+          margin: 4px 10px;
           width: calc(100% - 80px);
           // max-height: 120px;
           display: flex;
@@ -306,6 +306,7 @@ export default {
               }
               // introduction
               .intro {
+                margin: 10px 0;
                 color: @intro-color;
                 font-size: @intro-font-size;
               }

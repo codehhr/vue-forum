@@ -6,7 +6,7 @@ import Register from "../components/Register";
 import UserCenter from "../views/UserCenter";
 import Agreement from "../components/Agreement";
 import ForgetPassword from "../components/ForgetPassword";
-import HeaderPost from "../components/HeaderPost";
+import Post from "../components/Post";
 import AboutMe from "../components/AboutMe";
 import postDetail from "../components/PostDetail";
 import { getUserInfo } from "../api/api";
@@ -36,7 +36,7 @@ const routes = [
   {
     path: "/post",
     name: "post",
-    component: HeaderPost,
+    component: Post,
     meta: {
       requireLogin: true,
     },

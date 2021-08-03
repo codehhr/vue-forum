@@ -8,6 +8,8 @@ export default new Vuex.Store({
   state: {
     // 分类
     categoryId: null,
+    //
+    categoryName: "",
     // 登录状态
     alreadyLogin: false,
     // 用户信息
@@ -15,7 +17,8 @@ export default new Vuex.Store({
   },
   mutations: {
     setCategory(state, payload) {
-      state.categoryId = payload;
+      state.categoryId = payload.categoryId;
+      state.categoryName = payload.categoryName;
     },
     setLoginStatus(state, payload) {
       state.alreadyLogin = payload.alreadyLogin;

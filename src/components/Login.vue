@@ -112,6 +112,7 @@ export default {
 
 <style lang="less" scoped>
 .login-form {
+  margin-top: 10px;
   padding: 10px 40px;
   .remember-me {
     margin-bottom: 10px;

@@ -6,7 +6,6 @@ import Register from "../components/Register";
 import UserCenter from "../views/UserCenter";
 import Agreement from "../components/Agreement";
 import ForgetPassword from "../components/ForgetPassword";
-import Post from "../components/Post";
 import AboutMe from "../components/AboutMe";
 import postDetail from "../components/PostDetail";
 import { getUserInfo } from "../api/api";
@@ -31,15 +30,6 @@ const routes = [
     path: "/register",
     name: "register",
     component: Register,
-  },
-  // 发表新帖
-  {
-    path: "/post",
-    name: "post",
-    component: Post,
-    meta: {
-      requireLogin: true,
-    },
   },
   // 个人中心
   {

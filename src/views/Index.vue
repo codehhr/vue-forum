@@ -14,7 +14,7 @@
       <!-- 发表新帖 -->
       <template v-slot:right>
         <router-link to="/post">
-          <van-icon name="edit" />
+          <a-icon class="edit" type="form" />
         </router-link>
       </template>
     </page-header>
@@ -39,4 +39,8 @@ export default {
 };
 </script>
 
-<style scoped lang="less"></style>
+<style scoped lang="less">
+.edit {
+  font-size: 1.1rem;
+}
+</style>

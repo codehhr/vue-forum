@@ -1,7 +1,7 @@
 <template>
-  <div v-show="alreadyLogin" class="about-me-entrance">
+  <div v-show="alreadyLogin" @click="goToAbout" class="about-me-entrance">
     <a-icon class="bell-icon" type="sound" />
-    <van-button class="about-me-btn">关于我的</van-button>
+    <span>关于我的</span>
   </div>
 </template>
 
@@ -10,6 +10,11 @@ import { mapState } from "vuex";
 
 export default {
   name: "AboutEntrance",
+  methods: {
+    goToAbout() {
+      this.$router.push({ name: "about" });
+    },
+  },
   computed: {
     ...mapState({
       alreadyLogin: "alreadyLogin",
@@ -19,17 +24,24 @@ export default {
 </script>
 
 <style scoped lang="less">
+@main-color: #4d698e;
+
 .about-me-entrance {
-  position: relative;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  &:active {
+    background-color: #e8ecf3;
+  }
   .bell-icon {
     width: 24px;
     font-size: 1rem;
   }
-  .about-me-btn {
+  span {
     margin: 0 10px;
+    font-size: 1rem;
+    color: @main-color;
   }
 }
 </style>

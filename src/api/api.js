@@ -86,3 +86,24 @@ export function getPostList(categoryId = 1, pageNum = 1, pageSize = 20) {
 export function getPostDetail(postsId) {
   return axios.get(`/forum/api/bbs/bbsPosts/open/detail/${postsId}`);
 }
+
+// 创建帖子
+export function newPost(
+  categoryId,
+  type,
+  title,
+  subTitle,
+  intro,
+  content,
+  coverImgUrl
+) {
+  let formData = new FormData();
+  formData.append("categoryId", categoryId);
+  formData.append("type", type);
+  formData.append("title", title);
+  formData.append("subTitle", subTitle);
+  formData.append("intro", intro);
+  formData.append("content", content);
+  formData.append("coverImgUrl", coverImgUrl);
+  axios.post("/forum/api/bbs/bbsPosts/site/add", formData);
+}

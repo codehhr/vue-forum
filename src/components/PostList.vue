@@ -109,6 +109,7 @@
                         :src="item.coverImgUrl"
                         :alt="item.title"
                         lazy-load
+                        @click="previewImg(item)"
                       />
                     </div>
                   </div>
@@ -158,6 +159,7 @@ import { getPostList, getTopicsList } from "../api/api";
 // getPostList(categoryId = 2, pageNum = 1, pageSize = 20)
 import Announcement from "../components/Announcement";
 import PostDetail from "./PostDetail";
+import { ImagePreview } from "vant";
 
 export default {
   name: "PostList",
@@ -195,8 +197,10 @@ export default {
       pageSize: 10,
       // 分类名字
       postCategoryNameList: [],
-      //
+      // 单个帖子
       postItem: {},
+      // 图片预览数组
+      previewImgList: [],
     };
   },
   methods: {
@@ -240,9 +244,14 @@ export default {
     },
     // 获取帖子列表
     getPostsList() {
+      // let imgUrlList=[]
       getPostList(this.categoryId, this.pageNum, this.pageSize).then((res) => {
         if (res.code === 0) {
           this.$store.commit("setPostList", res.rows);
+          // 把所有封面存于数组,用户图片预览
+          res.rows.forEach((item) => {
+            this.previewImgList.push(item.coverImgUrl);
+          });
         } else {
           this.$message.warning(res.msg);
         }
@@ -253,6 +262,19 @@ export default {
       this.postItem = {};
       this.$store.commit("setPostDetailShow", true);
       this.postItem = item;
+    },
+    // 预览图片
+    previewImg(item) {
+      let index;
+      this.previewImgList.forEach((v, i) => {
+        if (v == item.coverImgUrl) {
+          index = i;
+        }
+      });
+      ImagePreview({
+        images: this.previewImgList,
+        startPosition: index,
+      });
     },
   },
   components: {

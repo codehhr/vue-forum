@@ -15,7 +15,6 @@
       <!-- 发表新帖 -->
       <template v-slot:right>
         <!-- <router-link to="/post">
-          
         </router-link> -->
         <a-dropdown class="edit" :trigger="['click']">
           <a-menu class="edit-menu" slot="overlay" @click="handleMenuClick">
@@ -31,7 +30,7 @@
           </a-button>
         </a-dropdown>
         <!-- editor -->
-        <van-popup class="text-popup" position="right" v-model="editorShow">
+        <van-popup class="editor-popup" position="right" v-model="editorShow">
           <go-back @close="showEditor">
             <template v-slot:publish>
               <van-icon
@@ -49,8 +48,8 @@
               </van-dialog>
             </template>
           </go-back>
-          <post-text v-show="key == 1"></post-text>
-          <post-html v-show="key == 2"></post-html>
+          <post-text class="post" v-show="key == 1"></post-text>
+          <post-html class="post" v-show="key == 2"></post-html>
         </van-popup>
       </template>
     </page-header>
@@ -145,12 +144,16 @@ export default {
     padding: 10px 40px;
   }
 }
-.text-popup,
-.html-popup {
+.editor-popup {
+  width: 100%;
   height: 100%;
   .dialog {
     margin: 0;
     padding: 20px;
+  }
+  .post {
+    height: calc(100% - 46px);
+    overflow: auto;
   }
 }
 </style>

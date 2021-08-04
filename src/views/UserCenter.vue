@@ -178,13 +178,13 @@ export default {
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
           console.log(values);
-          modifyUserInfo(
-            values.userName,
-            values.email,
-            values.phonenumber,
-            values.sex,
-            values.remark
-          ).then((res) => {
+          modifyUserInfo({
+            userName: values.userName,
+            email: values.email,
+            phonenumber: values.phonenumber,
+            sex: values.sex,
+            remark: values.remark,
+          }).then((res) => {
             if (res.code === 0) {
               this.$message.success("修改成功 ~");
               this.$store.dispatch("checkAlreadyLogin");

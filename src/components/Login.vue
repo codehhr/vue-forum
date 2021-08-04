@@ -80,7 +80,10 @@ export default {
       e.preventDefault();
       this.form.validateFields((err, values) => {
         if (!err) {
-          login(values.username, values.password)
+          login({
+            username: values.username,
+            password: values.password,
+          })
             .then((res) => {
               // 登录成功
               if (res.code === 0) {

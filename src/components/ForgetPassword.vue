@@ -154,12 +154,12 @@ export default {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          forgetPassword(
-            values.loginName,
-            values.password,
-            values.phonenumber,
-            values.code
-          ).then((res) => {
+          forgetPassword({
+            loginName: values.loginName,
+            password: values.password,
+            phonenumber: values.phonenumber,
+            code: values.code,
+          }).then((res) => {
             if (res.code === 0) {
               this.$router.push({ name: "login" });
               this.$message.success("操作成功,现在可以登录啦~");

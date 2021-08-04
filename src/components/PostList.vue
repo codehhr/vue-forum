@@ -218,7 +218,11 @@ export default {
     },
     // 下拉刷新
     onRefresh() {
-      getPostList(this.categoryId, 1, this.pageSize).then((res) => {
+      getPostList({
+        categoryId: this.categoryId,
+        pageNum: 1,
+        pageSize: this.pageSize,
+      }).then((res) => {
         if (res.code === 0) {
           this.$store.commit("setPostList", res.rows);
           setTimeout(() => {

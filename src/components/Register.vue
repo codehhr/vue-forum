@@ -210,15 +210,15 @@ export default {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          register(
-            values.loginName,
-            values.password,
-            values.userName,
-            values.phonenumber,
-            values.code,
-            values.sex,
-            values.remark
-          ).then((res) => {
+          register({
+            loginName: values.loginName,
+            password: values.password,
+            userName: values.userName,
+            phonenumber: values.phonenumber,
+            code: values.code,
+            sex: values.sex,
+            remark: values.remark,
+          }).then((res) => {
             if (res.code === 0) {
               this.$router.push({ name: "login" });
               this.$message.success("注册成功,现在可以登录啦~");

@@ -8,7 +8,7 @@ export function getTopicsList() {
 }
 
 // 登录
-export function login(username, password) {
+export function login({ username, password }) {
   let formData = new FormData();
   formData.append("username", username);
   formData.append("rememberMe", true);
@@ -22,7 +22,7 @@ export function logOut() {
 }
 
 // 忘记密码
-export function forgetPassword(loginName, password, phonenumber, code) {
+export function forgetPassword({ loginName, password, phonenumber, code }) {
   let formData = new FormData();
   formData.append("loginName", loginName);
   formData.append("password", password);
@@ -32,15 +32,15 @@ export function forgetPassword(loginName, password, phonenumber, code) {
 }
 
 // 注册
-export function register(
+export function register({
   loginName,
   password,
   userName,
   phonenumber,
   code,
   sex,
-  remark
-) {
+  remark,
+}) {
   let formData = new FormData();
   formData.append("loginName", loginName);
   formData.append("password", password);
@@ -63,7 +63,7 @@ export function getUserInfo() {
 }
 
 // 修改个人信息
-export function modifyUserInfo(userName, email, phonenumber, sex, remark) {
+export function modifyUserInfo({ userName, email, phonenumber, sex, remark }) {
   let formData = new FormData();
   formData.append("userName", userName);
   formData.append("email", email);
@@ -74,7 +74,7 @@ export function modifyUserInfo(userName, email, phonenumber, sex, remark) {
 }
 
 // 请求帖子列表
-export function getPostList(categoryId = 1, pageNum = 1, pageSize = 20) {
+export function getPostList({ categoryId = 1, pageNum = 1, pageSize = 20 }) {
   let formData = new FormData();
   formData.append("categoryId", categoryId);
   formData.append("pageNum", pageNum);
@@ -91,15 +91,15 @@ export function getPostDetail(postsId) {
   创建帖子
 */
 // 分类 Id ,类型(可选) ,标题 ,子标题(可选) , 描述 ,副文本(可选) ,封面
-export function newPost(
+export function newPost({
   categoryId,
   type,
   title,
   subTitle,
   intro,
   content,
-  coverImgUrl
-) {
+  coverImgUrl,
+}) {
   let formData = new FormData();
   formData.append("categoryId", categoryId);
   formData.append("type", type);

@@ -157,7 +157,7 @@
 import { mapState } from "vuex";
 import { getPostList, getTopicsList } from "../api/api";
 // getPostList(categoryId = 2, pageNum = 1, pageSize = 20)
-import Announcement from "../components/Announcement";
+import Announcement from "./Announcement";
 import PostDetail from "./PostDetail";
 import { ImagePreview } from "vant";
 
@@ -226,7 +226,7 @@ export default {
         if (res.code === 0) {
           this.$store.commit("setPostList", res.rows);
           setTimeout(() => {
-            this.$message.success("刷新成功 ~");
+            this.$message.success("刷新成功 ~", 1);
             this.isLoading = false;
           }, 500);
         } else {

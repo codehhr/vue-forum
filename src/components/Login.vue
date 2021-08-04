@@ -87,7 +87,7 @@ export default {
             .then((res) => {
               // 登录成功
               if (res.code === 0) {
-                this.$message.success("登录成功");
+                this.$message.success("登录成功", 2);
                 this.$store.commit("setLoginStatus", {
                   alreadyLogin: true,
                   userInfo: res.data,

@@ -221,7 +221,7 @@ export default {
           }).then((res) => {
             if (res.code === 0) {
               this.$router.push({ name: "login" });
-              this.$message.success("注册成功,现在可以登录啦~");
+              this.$message.success("注册成功,现在可以登录啦~", 2);
             } else {
               this.$message.success(res.msg);
             }

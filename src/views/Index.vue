@@ -22,12 +22,11 @@
             <a-menu-item class="edit-menu-item" key="1"
               ><a-icon type="edit" />文本</a-menu-item
             >
-
             <a-menu-item class="edit-menu-item" key="2">
               <span v-text="'</>副文本'"></span>
             </a-menu-item>
           </a-menu>
-          <a-button style="padding: 0 5px;border: none;">
+          <a-button style="width: 24px;height: 100%;border: none;">
             <a-icon class="edit" type="form" />
           </a-button>
         </a-dropdown>

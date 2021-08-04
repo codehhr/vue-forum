@@ -11,7 +11,7 @@
       position="bottom"
       v-model="switchTopicsShow"
     >
-      <div @click="switchCategory()" class="category-item">
+      <div @click="switchCategory('')" class="category-item">
         <div class="category-cover-outer">
           <div class="all category-cover">All</div>
         </div>
@@ -74,7 +74,9 @@ export default {
     },
     // 获取点击分类 Id
     switchCategory(categoryId) {
-      getPostList(categoryId, 1, 10).then((res) => {
+      console.log(categoryId);
+      getPostList({ categoryId, pageNum: 1, pageSize: 10 }).then((res) => {
+        console.log(res);
         if (res.code === 0) {
           if (res.rows.length === 0) {
             this.$message.warning("那个分类目前还没有什么东西~");
@@ -90,6 +92,7 @@ export default {
   },
 
   created() {
+    // 获取专题列表
     this.getTopicList();
   },
 };

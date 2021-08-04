@@ -22,6 +22,11 @@ Vue.use(Dialog);
 // ImagePreview
 import { ImagePreview } from "vant";
 Vue.use(ImagePreview);
+// form
+import { Form } from "vant";
+import { Field } from "vant";
+Vue.use(Form);
+Vue.use(Field);
 
 Vue.config.productionTip = false;
 

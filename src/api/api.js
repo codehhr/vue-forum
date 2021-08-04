@@ -74,10 +74,15 @@ export function modifyUserInfo(userName, email, phonenumber, sex, remark) {
 }
 
 // 请求帖子列表
-export function getPostList(categoryId = 2, pageNum = 1, pageSize = 20) {
+export function getPostList(categoryId = 1, pageNum = 1, pageSize = 20) {
   let formData = new FormData();
   formData.append("categoryId", categoryId);
   formData.append("pageNum", pageNum);
   formData.append("pageSize", pageSize);
   return axios.post("/forum/api/bbs/bbsPosts/open/list", formData);
+}
+
+// 获取帖子详情
+export function getPostDetail(postsId) {
+  return axios.get(`/forum/api/bbs/bbsPosts/open/detail/${postsId}`);
 }

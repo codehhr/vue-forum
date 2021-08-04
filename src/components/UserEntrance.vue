@@ -103,17 +103,23 @@ export default {
     }
   }
   .user-popup {
-    padding: 20px;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: flex-start;
     > div {
-      margin: 10px 0;
+      padding: 10px 20px;
+      width: 100%;
+      text-align: left;
+      border-radius: 20px;
       font-size: @font-size;
+      &:active {
+        background-color: #e8ecf3;
+      }
       span {
-        color: @text-color;
         margin: 0 10px;
+        color: @text-color;
       }
     }
   }

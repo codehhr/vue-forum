@@ -87,7 +87,10 @@ export function getPostDetail(postsId) {
   return axios.get(`/forum/api/bbs/bbsPosts/open/detail/${postsId}`);
 }
 
-// 创建帖子
+/* 
+  创建帖子
+*/
+// 分类 Id ,类型(可选) ,标题 ,子标题(可选) , 描述 ,副文本(可选) ,封面
 export function newPost(
   categoryId,
   type,

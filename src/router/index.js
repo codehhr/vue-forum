@@ -7,7 +7,6 @@ import UserCenter from "../views/UserCenter";
 import Agreement from "../components/Agreement";
 import ForgetPassword from "../components/ForgetPassword";
 import AboutMe from "../components/AboutMe";
-import postDetail from "../components/PostDetail";
 import { getUserInfo } from "../api/api";
 
 Vue.use(VueRouter);
@@ -60,12 +59,6 @@ const routes = [
     meta: {
       requireLogin: true,
     },
-  },
-  // 帖子详情页
-  {
-    path: "/postDetail/:postsId",
-    name: "postDetail",
-    component: postDetail,
   },
 ];
 

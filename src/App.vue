@@ -49,8 +49,11 @@ img {
   .van-icon {
     font-size: 1.6rem;
   }
+  .ant-btn {
+    outline: none;
+  }
   .van-button {
-    color: #4d698e;
+    padding: 0;
     border: none;
     outline: none;
   }

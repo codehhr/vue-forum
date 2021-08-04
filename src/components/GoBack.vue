@@ -18,7 +18,7 @@ export default {
 
 <style scoped lang="less">
 .go-back {
-  padding: 0 20px;
+  padding: 0 20px 0 10px;
   width: 100%;
   display: flex;
   align-items: center;
@@ -27,6 +27,7 @@ export default {
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
   .go-back-btn {
     padding: 0;
+    width: 40px;
   }
 }
 </style>

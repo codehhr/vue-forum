@@ -292,8 +292,15 @@ export default {
       categoryId: "categoryId",
       categoryName: "categoryName",
       color: "color",
-      postDetailShow: "postDetailShow",
     }),
+    postDetailShow: {
+      get() {
+        return this.$store.state.postDetailShow;
+      },
+      set(payload) {
+        this.$store.commit("setPostDetailShow", payload);
+      },
+    },
   },
 };
 </script>

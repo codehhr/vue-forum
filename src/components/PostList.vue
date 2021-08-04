@@ -2,6 +2,7 @@
   <div class="postlist">
     <!-- post-list -->
     <div class="post-list">
+      <!-- 下拉刷新 start -->
       <van-pull-refresh
         class="pull-refresh"
         :head-height="80"
@@ -11,9 +12,7 @@
         <!-- 公告 -->
         <announcement>
           <template v-slot:title>
-            <div>
-              <h2>亿个人论坛</h2>
-            </div>
+            <h2 class="post-list-title">亿个人论坛</h2>
           </template>
         </announcement>
         <!-- 下拉提示 , 通过 scale 实现一个缩放效果 -->
@@ -92,20 +91,18 @@
             <a-button v-else @click="onLoadMore">加载更多</a-button>
           </div>
           <a-list-item loading="true" slot="renderItem" slot-scope="item">
-            <router-link
-              class="go-to-post-detail"
-              :to="{ name: 'postDetail', params: { postsId: item.postsId } }"
-            >
-              <div class="post-item-content">
-                <a-avatar
-                  class="post-item-avatar"
-                  slot="avatar"
-                  :src="item.avatar"
-                />
-                <div class="post-item-middle">
-                  <div class="title">{{ item.title }}</div>
-                  <div class="des">
-                    <div class="des-intro">
+            <div class="post-item-content">
+              <a-avatar
+                class="post-item-avatar"
+                slot="avatar"
+                :src="item.avatar"
+              />
+              <div class="post-item-middle">
+                <span class="username">{{ item.userName }} </span>
+                <div class="des">
+                  <div class="des-intro">
+                    <div class="title">{{ item.title }}</div>
+                    <div class="des-intro-inner">
                       <div class="intro">{{ item.intro }}</div>
                       <van-image
                         class="cover"
@@ -114,31 +111,58 @@
                         lazy-load
                       />
                     </div>
-                    <p class="sendtime">{{ item.sendTime }}</p>
+                  </div>
+                  <div class="post-item-fooetr">
+                    <div class="post-item-fooetr-left">
+                      <announcement>
+                        <template v-slot:category>
+                          <div>
+                            <a-tag color="#fefefe">
+                              <h2
+                                :style="{ color: color }"
+                                class="category-name"
+                                v-text="getCategoryName(item.categoryId)"
+                              ></h2>
+                            </a-tag>
+                          </div>
+                        </template>
+                      </announcement>
+                      <span class="sendtime">{{ item.sendTime }} </span>
+                    </div>
+                    <div
+                      @click="showPostDetail(item)"
+                      class="post-item-fooetr-right"
+                    >
+                      <van-button class="go-to-post-detail">详情</van-button>
+                    </div>
                   </div>
                 </div>
-                <div class="readnum">{{ item.readNum }}</div>
               </div>
-            </router-link>
+              <div class="readnum">{{ item.readNum }}</div>
+            </div>
           </a-list-item>
         </a-list>
         <!-- 触底加载版 end -->
       </van-pull-refresh>
+      <!-- 下拉刷新 end -->
+      <van-popup class="post-popup" position="right" v-model="postDetailShow">
+        <post-detail :postDetail="postItem"></post-detail>
+      </van-popup>
     </div>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
-import { getPostList } from "../api/api";
-import Announcement from "../components/Announcement";
+import { getPostList, getTopicsList } from "../api/api";
 // getPostList(categoryId = 2, pageNum = 1, pageSize = 20)
+import Announcement from "../components/Announcement";
+import PostDetail from "./PostDetail";
 
 export default {
   name: "PostList",
   data() {
     return {
-      postList: [],
       /*
         分页版
        */
@@ -158,24 +182,41 @@ export default {
       /*
         触底加载版
       */
+      // 默认不加载
       loading: true,
+      // 加载更多
       loadingMore: false,
+      // 显示加载更多按钮
       showLoadingMore: true,
       // 下拉刷新
       isLoading: false,
       // 页码
       pageNum: 1,
-      pageSize: 20,
+      pageSize: 10,
+      // 分类名字
+      postCategoryNameList: [],
+      //
+      postItem: {},
     };
   },
   methods: {
+    // 开局先判断类别
+    getPostCategoryNameList() {
+      getTopicsList().then((res) => {
+        res.rows.forEach((item) => {
+          this.postCategoryNameList.push(item.name);
+        });
+      });
+    },
+    // 分类标签名
+    getCategoryName(categoryId) {
+      return this.postCategoryNameList[categoryId - 1];
+    },
     // 下拉刷新
     onRefresh() {
-      this.pageNum = 1;
-      getPostList(2, this.pageNum, this.pageSize).then((res) => {
-        console.log(res.rows);
+      getPostList(this.categoryId, 1, this.pageSize).then((res) => {
         if (res.code === 0) {
-          this.postList = res.rows;
+          this.$store.commit("setPostList", res.rows);
           setTimeout(() => {
             this.$message.success("刷新成功 ~");
             this.isLoading = false;
@@ -189,57 +230,83 @@ export default {
     onLoadMore() {
       this.pageNum++;
       this.loadingMore = true;
-      getPostList(2, this.pageNum, this.pageSize).then((res) => {
-        console.log(res.rows);
-        this.postList = this.postList.concat(res.rows);
+      getPostList(this.categoryId, this.pageNum, this.pageSize).then((res) => {
+        this.$store.commit("setPostList", this.postList.concat(res.rows));
         this.loadingMore = false;
         this.$nextTick(() => {
           window.dispatchEvent(new Event("resize"));
         });
       });
     },
+    // 获取帖子列表
     getPostsList() {
-      getPostList(2, this.pageNum, this.pageSize).then((res) => {
+      getPostList(this.categoryId, this.pageNum, this.pageSize).then((res) => {
         if (res.code === 0) {
-          this.postList = res.rows;
+          this.$store.commit("setPostList", res.rows);
         } else {
           this.$message.warning(res.msg);
         }
       });
     },
+    // 显示帖子详情
+    showPostDetail(item) {
+      this.postItem = {};
+      this.$store.commit("setPostDetailShow", true);
+      this.postItem = item;
+    },
   },
   components: {
     Announcement,
+    PostDetail,
   },
   created() {
     this.getPostsList();
+    this.getPostCategoryNameList();
     this.loading = false;
   },
   computed: {
     ...mapState({
+      postList: "postList",
       categoryId: "categoryId",
+      categoryName: "categoryName",
+      color: "color",
+      postDetailShow: "postDetailShow",
     }),
   },
 };
 </script>
 
 <style scoped lang="less">
+@post-list-title-font-size: 1rem;
+
 .post-list {
-  // padding: 12px;
   height: calc(100vh - 46px);
   overflow: hidden;
+  .post-popup {
+    width: 100%;
+  }
+  .announcement {
+    background-color: #e8ecf3;
+    letter-spacing: 0.6rem;
+  }
   .pull-refresh {
-    height: 100%;
+    height: calc(100% - 10px);
     overflow-y: auto;
+    .post-list-title {
+      font-size: @post-list-title-font-size;
+    }
   }
 }
 </style>
 
 <style lang="less">
 @main-bg-color: #e8ecf3;
-@font-size: 1.2rem;
-@intro-font-size: 1.1rem;
+@main-color: #667c99;
+@username-font-size: 0.8rem;
+@font-size: 0.9rem;
+@intro-font-size: 0.8rem;
 @intro-color: #666666;
+@sendtime-font-size: 0.6rem;
 
 // 自定义刷新
 .doge {
@@ -258,70 +325,133 @@ export default {
 .ant-list {
   // 每一项
   .ant-list-item {
-    .go-to-post-detail {
-      padding: 12px;
+    padding: 10px 10px 0;
+    width: 100%;
+    .post-item-content {
       width: 100%;
-      .post-item-content {
-        width: 100%;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      // 头像
+      .post-item-avatar {
+        img {
+          width: 32px;
+        }
+      }
+      // 中间部分
+      .post-item-middle {
+        width: calc(100% - 76px);
         display: flex;
+        flex-direction: column;
         align-items: flex-start;
         justify-content: space-between;
-        // 头像
-        .post-item-avatar {
-          img {
-            width: 32px;
-          }
+        .username {
+          margin: 2px 3px 10px;
+          font-size: @username-font-size;
+          color: #282c2e;
         }
-        // 中间部分
-        .post-item-middle {
-          margin: 4px 10px;
-          width: calc(100% - 80px);
-          // max-height: 120px;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-          justify-content: space-between;
+        // 描述
+        .des {
+          width: 100%;
+          overflow: hidden;
           .title {
+            padding-left: 10px;
+            text-align: left;
             font-size: @font-size;
           }
-          // 描述
-          .des {
-            overflow: hidden;
-            // 发表时间
-            .sendtime {
-              margin: 10px 0;
-              float: left;
-              height: 20px;
+          .des-intro-inner {
+            padding: 0 10px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: space-between;
+            // 封面
+            .cover {
+              transition: all 0.4s;
+              // height: 0;
+              overflow: hidden;
+              img {
+                border-radius: 6px;
+                width: 100px !important;
+              }
             }
-            .des-intro {
-              height: calc(100% - 20px);
+            // introduction
+            .intro {
+              margin: 2px 0;
+              color: @intro-color;
+              font-size: @intro-font-size;
+            }
+          }
+          .post-item-fooetr {
+            margin: 5px 0;
+            padding-left: 10px;
+            width: 100%;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            .post-item-fooetr-left {
+              height: 100%;
               display: flex;
-              flex-direction: column;
-              align-items: flex-start;
-              // 封面
-              .cover {
-                img {
-                  width: 100px;
+              align-items: center;
+              overflow: hidden;
+              .announcement {
+                height: 100%;
+                float: left;
+                letter-spacing: 0;
+                background-color: transparent;
+                > div {
+                  height: 100%;
+                  span {
+                    display: block;
+                    margin: 0;
+                    padding: 0;
+                    border: none;
+                    .category-name {
+                      margin: 0;
+                      padding: 0 6px;
+                      height: 100%;
+                      font-size: 0.6rem;
+                      border-radius: 4px;
+                      line-height: 1rem;
+                      background-color: #696f7e;
+                      color: #ffffff !important;
+                    }
+                  }
                 }
               }
-              // introduction
-              .intro {
-                margin: 10px 0;
-                color: @intro-color;
-                font-size: @intro-font-size;
+              // 发表时间
+              .sendtime {
+                margin: 0 5px;
+                float: left;
+                height: 100%;
+                line-height: calc(@sendtime-font-size * 2);
+                font-size: @sendtime-font-size;
+                color: #aaaaaa;
+              }
+            }
+            .post-item-fooetr-right {
+              margin-right: 10px;
+              button {
+                width: 40px;
+                height: 24px;
+                border-radius: 4px;
+                font-size: @font-size;
+                color: @main-color;
               }
             }
           }
         }
-        // 阅读量
-        .readnum {
-          position: relative;
-          top: 5px;
-          right: 5px;
-          padding: 4px 10px;
-          border-radius: 4px;
-          background-color: @main-bg-color;
-        }
+      }
+      // 阅读量
+      .readnum {
+        position: relative;
+        top: 5px;
+        right: 5px;
+        padding: 4px 10px;
+        border-radius: 4px;
+        background-color: @main-bg-color;
       }
     }
   }

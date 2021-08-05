@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     // 分类
-    categoryId: 1,
+    categoryId: "",
     //
     postDetailCategoryName: "",
     // 登录状态

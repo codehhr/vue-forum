@@ -103,7 +103,7 @@
               avatar
               :row="3"
               row-width="78vw"
-              :loading="!skeletonLoading"
+              :loading="skeletonLoading"
             >
               <div class="post-item-content">
                 <a-avatar

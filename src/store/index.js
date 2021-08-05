@@ -14,16 +14,19 @@ export default new Vuex.Store({
     alreadyLogin: false,
     // 用户信息
     userInfo: null,
-    // Notificate
-    hasNotificate: false,
     // 帖子列表
     postList: [],
     // category-tag-color
     color: "",
     // 显示帖子详情页
     postDetailShow: false,
+    // 加载最后一页数据
+    loadEnd: false,
   },
   mutations: {
+    setLoadEnd(state, payload) {
+      state.hasEnd = payload;
+    },
     setPostDetailShow(state, payload) {
       state.postDetailShow = payload;
     },

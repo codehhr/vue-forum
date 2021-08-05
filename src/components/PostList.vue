@@ -215,6 +215,9 @@ export default {
     },
     // 下拉刷新
     onRefresh() {
+      // 下拉刷新起始页
+      this.pageNum = 1;
+      // 重置加载到底状态
       this.$store.commit("setLoadEnd", false);
       getPostList({
         categoryId: this.categoryId,

@@ -15,7 +15,7 @@
       ></div>
       <span>个人中心</span>
     </van-cell>
-    <van-popup class="user-popup" position="bottom" v-model="userShow">
+    <van-popup class="user-popup" position="bottom" v-model="userCenterShow">
       <div class="user" @click="goToUserCenter">
         <a-icon type="user" />
         <span>个人主页</span>
@@ -36,12 +36,12 @@ export default {
   name: "UserEntrance",
   data() {
     return {
-      userShow: false,
+      userCenterShow: false,
     };
   },
   methods: {
     showUserPopup() {
-      this.userShow = true;
+      this.userCenterShow = true;
     },
     goToUserCenter() {
       this.$router.push({ name: "user" });
@@ -49,7 +49,7 @@ export default {
     requestLogOut() {
       logOut().then(() => {
         this.$message.success(" 已退出登录 ~");
-        this.userShow = false;
+        this.userCenterShow = false;
         this.$emit("requestClosePopup", false);
         this.$store.commit("setLoginStatus", {
           alreadyLogin: false,
@@ -109,7 +109,7 @@ export default {
     align-items: flex-start;
     justify-content: flex-start;
     > div {
-      padding: 10px 20px;
+      padding: 18px 20px;
       width: 100%;
       text-align: left;
       border-radius: 20px;

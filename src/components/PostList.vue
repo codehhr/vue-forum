@@ -152,7 +152,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="readnum">{{ item.readNum }}</div>
+                <div class="readnum">
+                  <a-icon type="eye" />{{ item.readNum }}
+                </div>
               </div>
             </van-skeleton>
             <!-- skeleton end -->
@@ -308,10 +310,20 @@ export default {
         pageSize: this.pageSize,
       }).then((res) => {
         if (res.code === 0) {
-          this.$store.commit("setPostList", res.rows);
-          // 把所有封面存于数组,用户图片预览
-          this.$store.commit("clearPreviewImgList", []);
-          this.$store.commit("setPreviewImgList", res.rows);
+          if (res.rows.length === 0) {
+            this.$message.warning("那个分类目前还没有什么东西~");
+          } else {
+            // 初始化触底是否需要再加载状态 (小于一页的情况)
+            if (this.pageSize >= res.total) {
+              this.$store.commit("setLoadEnd", true);
+            } else {
+              this.$store.commit("setLoadEnd", false);
+            }
+            this.$store.commit("setPostList", res.rows);
+            // 把所有封面存于数组,用户图片预览
+            this.$store.commit("clearPreviewImgList", []);
+            this.$store.commit("setPreviewImgList", res.rows);
+          }
         } else {
           this.$message.warning(res.msg);
         }

@@ -78,7 +78,6 @@ export default {
     // 获取点击分类 Id
     switchCategory(categoryId) {
       // 设置 categoryId
-      // this.pageNum = 1;
       this.$store.commit("setCategoryId", categoryId);
       localStorage.setItem("categoryId", JSON.stringify(categoryId));
       getPostList({
@@ -97,6 +96,7 @@ export default {
               this.$store.commit("setLoadEnd", false);
             }
             this.$store.commit("setPostList", res.rows);
+            // 把所有封面存于数组,用户图片预览
             this.$store.commit("clearPreviewImgList", []);
             this.$store.commit("setPreviewImgList", res.rows);
           }

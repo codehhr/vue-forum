@@ -78,12 +78,12 @@ export default {
     // 获取点击分类 Id
     switchCategory(categoryId) {
       // 设置 categoryId
-      this.pageNum = 1;
+      // this.pageNum = 1;
       this.$store.commit("setCategoryId", categoryId);
       localStorage.setItem("categoryId", JSON.stringify(categoryId));
       getPostList({
         categoryId: this.categoryId,
-        pageNum: this.pageNum,
+        pageNum: 1,
         pageSize: this.pageSize,
       }).then((res) => {
         if (res.code === 0) {
@@ -91,12 +91,14 @@ export default {
             this.$message.warning("那个分类目前还没有什么东西~");
           } else {
             // 初始化触底是否需要再加载状态 (小于一页的情况)
-            if (this.pageNum * this.pageSize >= res.total) {
+            if (this.pageSize >= res.total) {
               this.$store.commit("setLoadEnd", true);
             } else {
               this.$store.commit("setLoadEnd", false);
             }
             this.$store.commit("setPostList", res.rows);
+            this.$store.commit("clearPreviewImgList", []);
+            this.$store.commit("setPreviewImgList", res.rows);
           }
         } else {
           this.$message.warning(res.msg);

@@ -15,7 +15,7 @@
       <!-- 发表新帖 -->
       <template v-slot:right>
         <!-- editor-btn -->
-        <a-button @click="showEditorPopup" class="edit-btn" icon="edit" />
+        <a-button @click="showEditorPopup" class="edit-btn" icon="form" />
         <!-- editor -->
         <van-popup class="editor-popup" position="right" v-model="editorShow">
           <!-- 返回 -->

@@ -91,22 +91,12 @@ export function getPostDetail(postsId) {
   创建帖子
 */
 // 分类 Id ,类型(可选) ,标题 ,子标题(可选) , 描述 ,副文本(可选) ,封面
-export function newPost({
-  categoryId,
-  type,
-  title,
-  subTitle,
-  intro,
-  content,
-  coverImgUrl,
-}) {
+export function newPost({ categoryId, title, subTitle, intro, coverImgUrl }) {
   let formData = new FormData();
   formData.append("categoryId", categoryId);
-  formData.append("type", type);
   formData.append("title", title);
   formData.append("subTitle", subTitle);
   formData.append("intro", intro);
-  formData.append("content", content);
   formData.append("coverImgUrl", coverImgUrl);
-  axios.post("/forum/api/bbs/bbsPosts/site/add", formData);
+  return axios.post("/forum/api/bbs/bbsPosts/site/add", formData);
 }

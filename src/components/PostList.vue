@@ -12,7 +12,7 @@
         <!-- 公告 -->
         <announcement>
           <template v-slot:title>
-            <h2 class="post-list-title">亿个人论坛</h2>
+            <h2 class="post-announcement">亿个人论坛</h2>
           </template>
         </announcement>
         <!-- 下拉提示 , 通过 scale 实现一个缩放效果 -->
@@ -72,7 +72,7 @@
 
         <!-- 触底加载版 start -->
         <a-list
-          class="demo-loadmore-list"
+          class="post-loadmore-list"
           :loading="loading"
           item-layout="horizontal"
           :data-source="postList"
@@ -80,6 +80,7 @@
           <div
             v-if="showLoadingMore"
             slot="loadMore"
+            class="loadmore"
             :style="{
               textAlign: 'center',
               marginTop: '12px',
@@ -90,64 +91,80 @@
             <a-spin v-if="loadingMore" />
             <a-button v-else @click="onLoadMore">加载更多</a-button>
           </div>
-          <a-list-item loading="true" slot="renderItem" slot-scope="item">
-            <div class="post-item-content">
-              <a-avatar
-                class="post-item-avatar"
-                slot="avatar"
-                :src="item.avatar"
-              />
-              <div class="post-item-middle">
-                <span class="username" v-text="item.userName"></span>
-                <div class="des">
-                  <div class="des-intro">
-                    <div class="title" v-text="item.title"></div>
-                    <div class="des-intro-inner">
-                      <div class="intro" v-html="item.intro"></div>
-                      <van-image
-                        class="cover"
-                        :src="item.coverImgUrl"
-                        :alt="item.title"
-                        lazy-load
-                        @click="previewImg(item)"
-                      />
+          <a-list-item
+            class="post-list-item"
+            slot="renderItem"
+            slot-scope="item"
+          >
+            <!-- skeleton start -->
+            <van-skeleton
+              animate
+              title
+              avatar
+              :row="3"
+              row-width="78vw"
+              :loading="!skeletonLoading"
+            >
+              <div class="post-item-content">
+                <a-avatar
+                  class="post-item-avatar"
+                  slot="avatar"
+                  :src="item.avatar"
+                />
+                <div class="post-item-middle">
+                  <span class="username" v-text="item.userName"></span>
+                  <div class="des">
+                    <div class="des-intro">
+                      <div class="title" v-text="item.title"></div>
+                      <div class="des-intro-inner">
+                        <div class="intro" v-html="item.intro"></div>
+                        <van-image
+                          class="cover"
+                          :src="item.coverImgUrl"
+                          :alt="item.title"
+                          @click="previewImg(item)"
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div class="post-item-fooetr">
-                    <div class="post-item-fooetr-left">
-                      <announcement>
-                        <template v-slot:category>
-                          <div>
-                            <a-tag color="#fefefe">
-                              <h2
-                                :style="{ color: color }"
-                                class="category-name"
-                                v-text="getCategoryName(item.categoryId)"
-                              ></h2>
-                            </a-tag>
-                          </div>
-                        </template>
-                      </announcement>
-                      <span class="sendtime">{{ item.sendTime }} </span>
-                    </div>
-                    <div
-                      @click="showPostDetail(item)"
-                      class="post-item-fooetr-right"
-                    >
-                      <van-button class="go-to-post-detail">详情</van-button>
+                    <div class="post-item-fooetr">
+                      <div class="post-item-fooetr-left">
+                        <announcement>
+                          <template v-slot:category>
+                            <div>
+                              <a-tag color="#fefefe">
+                                <h2
+                                  :style="{ color: color }"
+                                  class="category-name"
+                                  v-text="getCategoryName(item.categoryId)"
+                                ></h2>
+                              </a-tag>
+                            </div>
+                          </template>
+                        </announcement>
+                        <span class="sendtime">{{ item.sendTime }} </span>
+                      </div>
+                      <div
+                        @click="showPostDetail(item)"
+                        class="post-item-fooetr-right"
+                      >
+                        <van-button class="go-to-post-detail">详情</van-button>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div class="readnum">{{ item.readNum }}</div>
               </div>
-              <div class="readnum">{{ item.readNum }}</div>
-            </div>
+            </van-skeleton>
+            <!-- skeleton end -->
           </a-list-item>
         </a-list>
         <!-- 触底加载版 end -->
       </van-pull-refresh>
       <!-- 下拉刷新 end -->
       <van-popup class="post-popup" position="right" v-model="postDetailShow">
-        <post-detail :postDetail="postItem"></post-detail>
+        <post-detail
+          :postItemAndCategoryList="passDataToPostDetail()"
+        ></post-detail>
       </van-popup>
     </div>
   </div>
@@ -184,7 +201,7 @@ export default {
       /*
         触底加载版
       */
-      // 默认不加载
+      // 默认不触发加载更多
       loading: true,
       // 加载更多
       loadingMore: false,
@@ -193,25 +210,31 @@ export default {
       // 下拉刷新
       isLoading: false,
       // 分类名字
-      postCategoryNameList: [],
-      // 单个帖子
+      postCategoryList: [],
+      // 单个帖子 ( 用于传入详情页显示详情 )
       postItem: {},
-      // 图片预览数组
-      previewImgList: [],
+      // 骨架屏幕
+      skeletonLoading: true,
     };
   },
   methods: {
-    // 开局先判断类别
-    getPostCategoryNameList() {
+    // 开局先判断类别 (分类标签)
+    getPostCategoryList() {
       getTopicsList().then((res) => {
         res.rows.forEach((item) => {
-          this.postCategoryNameList.push(item.name);
+          this.postCategoryList.push(item);
         });
       });
     },
-    // 分类标签名
+    // 返回分类标签名
     getCategoryName(categoryId) {
-      return this.postCategoryNameList[categoryId - 1];
+      let name = "";
+      this.postCategoryList.forEach((item) => {
+        if (item.categoryId == categoryId) {
+          name = item.name;
+        }
+      });
+      return name;
     },
     // 下拉刷新
     onRefresh() {
@@ -225,7 +248,18 @@ export default {
         pageSize: this.pageSize,
       }).then((res) => {
         if (res.code === 0) {
-          this.$store.commit("setPostList", res.rows);
+          if (res.rows.length === 0) {
+            this.$message.warning("此分类目前还没有什么东西~");
+          } else {
+            // 初始化触底是否需要再加载状态 (小于一页的情况)
+            if (this.pageSize >= res.total) {
+              this.$store.commit("setLoadEnd", true);
+            } else {
+              this.$store.commit("setLoadEnd", false);
+            }
+            this.$store.commit("setPostList", res.rows);
+            this.$store.commit("setPreviewImgList", res.rows);
+          }
           setTimeout(() => {
             this.$message.success(" 刷新成功 ~");
             this.isLoading = false;
@@ -244,7 +278,6 @@ export default {
         pageNum: this.pageNum,
         pageSize: this.pageSize,
       }).then((res) => {
-        console.log(res);
         if (res.code === 0) {
           if (this.pageNum * this.pageSize >= res.total) {
             if (this.loadEnd) {
@@ -259,6 +292,7 @@ export default {
               window.dispatchEvent(new Event("resize"));
             });
           }
+          this.$store.commit("setPreviewImgList", res.rows);
           // 结束加载动画
           this.loadingMore = false;
         } else {
@@ -276,22 +310,30 @@ export default {
         if (res.code === 0) {
           this.$store.commit("setPostList", res.rows);
           // 把所有封面存于数组,用户图片预览
-          res.rows.forEach((item) => {
-            this.previewImgList.push(item.coverImgUrl);
-          });
+          this.$store.commit("clearPreviewImgList", []);
+          this.$store.commit("setPreviewImgList", res.rows);
         } else {
           this.$message.warning(res.msg);
         }
       });
     },
-    // 显示帖子详情
+    // 显示帖子详情 (item 为当前帖子)
     showPostDetail(item) {
-      this.postItem = {};
+      // 显示详情页
       this.$store.commit("setPostDetailShow", true);
+      this.passDataToPostDetail();
       this.postItem = item;
+    },
+    // 页面传值 ( post-list -> postDetail )
+    passDataToPostDetail() {
+      return {
+        postItem: this.postItem,
+        postCategoryList: this.postCategoryList,
+      };
     },
     // 预览图片
     previewImg(item) {
+      // 从当前图片开始显示
       let index;
       this.previewImgList.forEach((v, i) => {
         if (v == item.coverImgUrl) {
@@ -309,18 +351,24 @@ export default {
     PostDetail,
   },
   created() {
+    // 获取帖子列表
     this.getPostsList();
-    this.getPostCategoryNameList();
+    // 获取帖子分类标签名
+    this.getPostCategoryList();
+    // 加载状态
     this.loading = false;
+  },
+  mounted() {
+    this.skeletonLoading = false;
   },
   computed: {
     ...mapState({
       postList: "postList",
       categoryId: "categoryId",
-      categoryName: "categoryName",
       color: "color",
       loadEnd: "loadEnd",
       pageSize: "pageSize",
+      previewImgList: "previewImgList",
     }),
     pageNum: {
       get() {
@@ -355,11 +403,16 @@ export default {
     background-color: #e8ecf3;
     letter-spacing: 0.6rem;
   }
+
   .pull-refresh {
-    height: calc(100% - 10px);
+    height: 100%;
     overflow-y: auto;
-    .post-list-title {
+    .post-announcement {
       font-size: @post-list-title-font-size;
+    }
+    .post-loadmore-list {
+      width: 100%;
+      min-height: 350px;
     }
   }
 }
@@ -381,9 +434,7 @@ export default {
   margin: 8px auto;
   border-radius: 4px;
 }
-.demo-loadmore-list {
-  min-height: 350px;
-}
+
 .ant-list-split .ant-list-item {
   border: none !important;
 }
@@ -437,9 +488,11 @@ export default {
               transition: all 0.4s;
               // height: 0;
               overflow: hidden;
+              text-align: center;
               img {
                 border-radius: 6px;
-                width: 100%;
+                width: 90%;
+                transition: all 0.4s;
               }
             }
             // introduction
@@ -452,7 +505,7 @@ export default {
             }
           }
           .post-item-fooetr {
-            margin: 5px 0;
+            margin: 10px 0;
             padding-left: 10px;
             width: 100%;
             height: 20px;
@@ -507,6 +560,7 @@ export default {
                 border-radius: 4px;
                 font-size: @font-size;
                 color: @main-color;
+                background-color: transparent;
               }
             }
           }
@@ -517,11 +571,14 @@ export default {
         position: relative;
         top: 5px;
         right: 5px;
-        padding: 4px 10px;
+        padding: 2px 10px;
         border-radius: 4px;
         background-color: @main-bg-color;
       }
     }
+  }
+  .loadmore {
+    padding-bottom: 60px;
   }
 }
 </style>

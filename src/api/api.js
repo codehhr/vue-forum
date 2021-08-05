@@ -21,7 +21,10 @@ export function logOut() {
   return axios.get("/forum/api/logout");
 }
 
-// 忘记密码
+/*
+  忘记密码
+  // userName:昵称; password:密码; phonenumber:手机号; code:验证码
+*/
 export function forgetPassword({ loginName, password, phonenumber, code }) {
   let formData = new FormData();
   formData.append("loginName", loginName);
@@ -31,7 +34,10 @@ export function forgetPassword({ loginName, password, phonenumber, code }) {
   return axios.post("/forum/api/password/forget", formData);
 }
 
-// 注册
+/*
+  注册
+  // loginName 登录名称; password:密码; userName:昵称; phonenumber:手机号; code:验证码; sex:性别; remark:个性签名
+*/
 export function register({
   loginName,
   password,
@@ -62,7 +68,10 @@ export function getUserInfo() {
   return axios.get("/forum/api/login-user/info");
 }
 
-// 修改个人信息
+/*
+  修改个人信息
+  // userName:昵称; email:邮箱; phonenumber:手机号; sex:性别; remark:个性签名
+*/
 export function modifyUserInfo({ userName, email, phonenumber, sex, remark }) {
   let formData = new FormData();
   formData.append("userName", userName);
@@ -73,7 +82,9 @@ export function modifyUserInfo({ userName, email, phonenumber, sex, remark }) {
   return axios.post("/forum/api/system/user/profile/update", formData);
 }
 
-// 请求帖子列表
+/*
+  请求帖子列表
+*/
 export function getPostList({
   categoryId,
   title = "",
@@ -95,8 +106,8 @@ export function getPostDetail(postsId) {
 
 /* 
   创建帖子
+  // 分类 Id ,类型(可选) ,标题 ,子标题(可选) , 描述 ,副文本(可选) ,封面
 */
-// 分类 Id ,类型(可选) ,标题 ,子标题(可选) , 描述 ,副文本(可选) ,封面
 export function newPost({ categoryId, title, subTitle, intro, coverImgUrl }) {
   let formData = new FormData();
   formData.append("categoryId", categoryId);
@@ -105,4 +116,17 @@ export function newPost({ categoryId, title, subTitle, intro, coverImgUrl }) {
   formData.append("intro", intro);
   formData.append("coverImgUrl", coverImgUrl);
   return axios.post("/forum/api/bbs/bbsPosts/site/add", formData);
+}
+
+/*
+  评论列表
+  // postsId:帖子 Id; pageNum:页码 (可选); pageSize:每页个数 (可选)
+*/
+export function getCommentsList(postsId, pageNum = 1, pageSize = 10) {
+  let formData = new FormData();
+  formData.append("postsId", postsId);
+  formData.append("pageNum", pageNum);
+  formData.append("pageSize", pageSize);
+
+  return axios.post("/forum/api/bbs/bbsComment/open/list", formData);
 }

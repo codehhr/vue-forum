@@ -1,7 +1,7 @@
 <template>
   <div class="go-back">
     <van-button @click="goBack" class="go-back-btn" icon="arrow-left" />
-    <slot name="publish"></slot>
+    <!-- <slot name="publish"></slot> -->
   </div>
 </template>
 

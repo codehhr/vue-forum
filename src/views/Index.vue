@@ -98,6 +98,7 @@ export default {
     padding: 20px;
   }
   .post {
+    padding-bottom: 10px;
     height: calc(100% - 46px);
     overflow: auto;
   }

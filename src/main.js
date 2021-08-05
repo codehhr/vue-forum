@@ -36,6 +36,9 @@ import { Form } from "vant";
 import { Field } from "vant";
 Vue.use(Form);
 Vue.use(Field);
+// Skeleton
+import { Skeleton } from "vant";
+Vue.use(Skeleton);
 
 Vue.config.productionTip = false;
 

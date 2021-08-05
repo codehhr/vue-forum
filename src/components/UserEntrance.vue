@@ -48,7 +48,7 @@ export default {
     },
     requestLogOut() {
       logOut().then(() => {
-        this.$message.success("已退出登录!", 2);
+        this.$message.success(" 已退出登录 ~");
         this.userShow = false;
         this.$emit("requestClosePopup", false);
         this.$store.commit("setLoginStatus", {

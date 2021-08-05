@@ -87,14 +87,14 @@ export default {
             .then((res) => {
               // 登录成功
               if (res.code === 0) {
-                this.$message.success("登录成功", 2);
+                this.$message.success("登录成功");
                 this.$store.commit("setLoginStatus", {
                   alreadyLogin: true,
                   userInfo: res.data,
                 });
                 this.$router.push({ name: "index" });
               } else {
-                this.$message.warning("帐号或密码错误");
+                this.$message.warning(res.msg);
               }
             })
             .catch((err) => {

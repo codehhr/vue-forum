@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { getTopicsList, getPostList } from "../api/api";
 
 export default {
@@ -65,18 +66,24 @@ export default {
     // 获取专题列表
     getTopicList() {
       getTopicsList().then((res) => {
-        let categoryList = [];
+        let tempCategoryList = [];
         res.rows.forEach((item) => {
-          categoryList.push(item);
+          tempCategoryList.push(item);
         });
-        this.categoryList = categoryList;
+        this.categoryList = tempCategoryList;
       });
     },
     // 获取点击分类 Id
     switchCategory(categoryId) {
-      console.log(categoryId);
-      getPostList({ categoryId, pageNum: 1, pageSize: 10 }).then((res) => {
-        console.log(res);
+      // 重置触底加载时机
+      this.$store.commit("setLoadEnd", false);
+      // 设置 categoryId
+      this.$store.commit("setCategoryId", categoryId);
+      getPostList({
+        categoryId: this.categoryId,
+        pageNum: 1,
+        pageSize: 10,
+      }).then((res) => {
         if (res.code === 0) {
           if (res.rows.length === 0) {
             this.$message.warning("那个分类目前还没有什么东西~");
@@ -94,6 +101,11 @@ export default {
   created() {
     // 获取专题列表
     this.getTopicList();
+  },
+  computed: {
+    ...mapState({
+      categoryId: "categoryId",
+    }),
   },
 };
 </script>

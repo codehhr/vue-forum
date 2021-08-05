@@ -10,6 +10,15 @@ Vue.use(Vant);
 import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.less";
 Vue.use(Antd);
+
+// Ant-Design 的全局属性 $message
+import { message } from "ant-design-vue";
+Vue.prototype.$message = message;
+message.config({
+  duration: 2, // 持续时间
+  top: `80px`, // 到页面顶部距离
+  maxCount: 3, // 最大显示数, 超过限制时，最早的消息会被自动关闭
+});
 // img
 import { Image as VanImage } from "vant";
 Vue.use(VanImage);

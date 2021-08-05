@@ -75,14 +75,14 @@ export default {
     },
     // 获取点击分类 Id
     switchCategory(categoryId) {
-      // 重置触底加载时机
+      // 重置是否需要触底加载
       this.$store.commit("setLoadEnd", false);
       // 设置 categoryId
       this.$store.commit("setCategoryId", categoryId);
       getPostList({
         categoryId: this.categoryId,
-        pageNum: 1,
-        pageSize: 10,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
       }).then((res) => {
         if (res.code === 0) {
           if (res.rows.length === 0) {
@@ -105,6 +105,8 @@ export default {
   computed: {
     ...mapState({
       categoryId: "categoryId",
+      pageNum: "pageSize",
+      pageSize: "pageSize",
     }),
   },
 };

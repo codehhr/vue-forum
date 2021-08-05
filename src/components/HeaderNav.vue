@@ -61,7 +61,7 @@ export default {
   }
   .nav-popup {
     padding: 20px 10px;
-    width: 60%;
+    width: 80%;
     height: 100vh;
     display: flex;
     flex-direction: column;

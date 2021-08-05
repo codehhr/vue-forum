@@ -22,8 +22,18 @@ export default new Vuex.Store({
     postDetailShow: false,
     // 加载最后一页数据
     loadEnd: false,
+    // 页码
+    pageNum: 1,
+    // 每页个数
+    pageSize: 10,
   },
   mutations: {
+    setPageNum(state, payload) {
+      state.pageNum = payload;
+    },
+    setPageSize(state, payload) {
+      state.pageSize = payload;
+    },
     setLoadEnd(state, payload) {
       state.hasEnd = payload;
     },

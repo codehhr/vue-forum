@@ -13,9 +13,10 @@
     >
       <div @click="switchCategory('')" class="category-item">
         <div class="category-cover-outer">
-          <div class="all category-cover">All</div>
+          <div class="all category-cover"></div>
         </div>
         <div class="category-name">全部分类</div>
+        <!-- 弹性布局占位 -->
         <div></div>
       </div>
       <div
@@ -33,6 +34,7 @@
           ></div>
         </div>
         <div class="category-name">{{ item.name }}</div>
+        <!-- 弹性布局占位 -->
         <div></div>
       </div>
     </van-popup>
@@ -152,21 +154,19 @@ export default {
       }
       .category-cover-outer {
         height: 100%;
-        border-radius: 16px;
+        border-radius: 5px;
         overflow: hidden;
         .category-cover {
           width: 50px;
           height: 100%;
           background-size: cover !important;
-          background-color: #aab9ce !important;
+          background-color: #aab9ce;
         }
       }
       .all {
-        width: auto;
-        height: auto;
-        padding: 10px;
-        color: #ffffff;
-        font-size: 2rem;
+        width: 100%;
+        height: 100%;
+        background: url("../assets/tom.png") center center no-repeat;
       }
       .category-name {
         font-size: @category-name-font-size;

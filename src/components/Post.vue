@@ -111,8 +111,8 @@ export default {
       })
         .then((res) => {
           if (res.code === 0) {
-            this.$message.success("发表成功 ~");
             this.$emit("closeEditorAfterPost", false);
+            this.$message.success("发表成功 ~");
           } else {
             this.$message.warning(res.msg);
           }

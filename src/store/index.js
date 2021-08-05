@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { getUserInfo, getTopicsList } from "../api/api";
+import { getUserInfo } from "../api/api";
 
 Vue.use(Vuex);
 
@@ -8,6 +8,8 @@ export default new Vuex.Store({
   state: {
     // 分类
     categoryId: Number(localStorage.getItem("categoryId")) || "",
+    //
+    categoryList: [],
     //
     postDetailCategoryName: "",
     // 登录状态
@@ -26,8 +28,16 @@ export default new Vuex.Store({
     pageNum: 1,
     // 每页个数
     pageSize: 10,
+    // 图片预览数组
+    previewImgList: [],
   },
   mutations: {
+    clearPreviewImgList(state, payload) {
+      state.previewImgList = payload;
+    },
+    setCategoryList(state, payload) {
+      state.categoryList = payload;
+    },
     setPageNum(state, payload) {
       state.pageNum = payload;
     },
@@ -45,9 +55,6 @@ export default new Vuex.Store({
     },
     setCategoryId(state, payload) {
       state.categoryId = payload;
-    },
-    setPostDetailCategoryName(state, payload) {
-      state.postDetailCategoryName = payload;
     },
     setLoginStatus(state, payload) {
       state.alreadyLogin = payload.alreadyLogin;
@@ -114,6 +121,14 @@ export default new Vuex.Store({
           break;
       }
     },
+    // 把所有封面存于数组,用户图片预览
+    setPreviewImgList(state, payload) {
+      let tempPreviewImgList = [];
+      payload.forEach((item) => {
+        tempPreviewImgList.push(item.coverImgUrl);
+      });
+      state.previewImgList = state.previewImgList.concat(tempPreviewImgList);
+    },
   },
   actions: {
     // 检查登录状态
@@ -130,20 +145,6 @@ export default new Vuex.Store({
             userInfo: null,
           });
         }
-      });
-    },
-    // 帖子详情页分类标签
-    setPostDetailCategoryName(context, payload) {
-      getTopicsList().then((res) => {
-        let postDetailCategoryNameList = [];
-        res.rows.forEach((item) => {
-          postDetailCategoryNameList.push(item.name);
-        });
-        context.commit(
-          "setPostDetailCategoryName",
-          postDetailCategoryNameList[payload - 1]
-        );
-        context.commit("setTagColor", payload);
       });
     },
   },

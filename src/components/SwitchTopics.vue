@@ -75,10 +75,10 @@ export default {
     },
     // 获取点击分类 Id
     switchCategory(categoryId) {
-      // 重置是否需要触底加载
-      this.$store.commit("setLoadEnd", false);
       // 设置 categoryId
+      this.pageNum = 1;
       this.$store.commit("setCategoryId", categoryId);
+      localStorage.setItem("categoryId", JSON.stringify(categoryId));
       getPostList({
         categoryId: this.categoryId,
         pageNum: this.pageNum,
@@ -88,6 +88,12 @@ export default {
           if (res.rows.length === 0) {
             this.$message.warning("那个分类目前还没有什么东西~");
           } else {
+            // 初始化触底是否需要再加载状态 (小于一页的情况)
+            if (this.pageNum * this.pageSize >= res.total) {
+              this.$store.commit("setLoadEnd", true);
+            } else {
+              this.$store.commit("setLoadEnd", false);
+            }
             this.$store.commit("setPostList", res.rows);
           }
         } else {
@@ -105,15 +111,23 @@ export default {
   computed: {
     ...mapState({
       categoryId: "categoryId",
-      pageNum: "pageSize",
       pageSize: "pageSize",
     }),
+    pageNum: {
+      get() {
+        return this.$store.state.pageNum;
+      },
+      set(payload) {
+        this.$store.commit("setPageNum", payload);
+      },
+    },
   },
 };
 </script>
 
 <style scoped lang="less">
 @main-color: #4d698e;
+@category-name-font-size: 1.2rem;
 
 .switch-topics {
   .switch-topics-btn {
@@ -129,7 +143,7 @@ export default {
     .category-item {
       margin: 10px 0;
       padding: 0 40px;
-      height: 60px;
+      height: 50px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -141,7 +155,7 @@ export default {
         border-radius: 16px;
         overflow: hidden;
         .category-cover {
-          width: 60px;
+          width: 50px;
           height: 100%;
           background-size: cover !important;
           background-color: #aab9ce !important;
@@ -155,7 +169,7 @@ export default {
         font-size: 2rem;
       }
       .category-name {
-        font-size: 1.4rem;
+        font-size: @category-name-font-size;
       }
     }
   }

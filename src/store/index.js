@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     // 分类
-    categoryId: "",
+    categoryId: Number(localStorage.getItem("categoryId")) || "",
     //
     postDetailCategoryName: "",
     // 登录状态
@@ -35,7 +35,7 @@ export default new Vuex.Store({
       state.pageSize = payload;
     },
     setLoadEnd(state, payload) {
-      state.hasEnd = payload;
+      state.loadEnd = payload;
     },
     setPostDetailShow(state, payload) {
       state.postDetailShow = payload;

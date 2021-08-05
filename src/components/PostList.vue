@@ -98,12 +98,12 @@
                 :src="item.avatar"
               />
               <div class="post-item-middle">
-                <span class="username">{{ item.userName }} </span>
+                <span class="username" v-text="item.userName"></span>
                 <div class="des">
                   <div class="des-intro">
-                    <div class="title">{{ item.title }}</div>
+                    <div class="title" v-text="item.title"></div>
                     <div class="des-intro-inner">
-                      <div class="intro">{{ item.intro }}</div>
+                      <div class="intro" v-html="item.intro"></div>
                       <van-image
                         class="cover"
                         :src="item.coverImgUrl"
@@ -192,9 +192,6 @@ export default {
       showLoadingMore: true,
       // 下拉刷新
       isLoading: false,
-      // 页码
-      pageNum: 1,
-      pageSize: 10,
       // 分类名字
       postCategoryNameList: [],
       // 单个帖子
@@ -218,15 +215,16 @@ export default {
     },
     // 下拉刷新
     onRefresh() {
+      this.$store.commit("setLoadEnd", false);
       getPostList({
         categoryId: this.categoryId,
-        pageNum: 1,
+        pageNum: this.pageNum,
         pageSize: this.pageSize,
       }).then((res) => {
         if (res.code === 0) {
           this.$store.commit("setPostList", res.rows);
           setTimeout(() => {
-            this.$message.success("刷新成功 ~", 1);
+            this.$message.success(" 刷新成功 ~");
             this.isLoading = false;
           }, 500);
         } else {
@@ -238,18 +236,40 @@ export default {
     onLoadMore() {
       this.pageNum++;
       this.loadingMore = true;
-      getPostList(this.categoryId, this.pageNum, this.pageSize).then((res) => {
-        this.$store.commit("setPostList", this.postList.concat(res.rows));
-        this.loadingMore = false;
-        this.$nextTick(() => {
-          window.dispatchEvent(new Event("resize"));
-        });
+      getPostList({
+        categoryId: this.categoryId,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+      }).then((res) => {
+        console.log(res);
+        if (res.code === 0) {
+          if (this.pageNum * this.pageSize >= res.total) {
+            if (this.loadEnd) {
+              this.$message.warning("没有更多了 ~");
+            } else {
+              this.$store.commit("setPostList", this.postList.concat(res.rows));
+              this.$store.commit("setLoadEnd", true);
+            }
+          } else {
+            this.$store.commit("setPostList", this.postList.concat(res.rows));
+            this.$nextTick(() => {
+              window.dispatchEvent(new Event("resize"));
+            });
+          }
+          // 结束加载动画
+          this.loadingMore = false;
+        } else {
+          console.log(res.msg);
+        }
       });
     },
     // 获取帖子列表
     getPostsList() {
-      // let imgUrlList=[]
-      getPostList(this.categoryId, this.pageNum, this.pageSize).then((res) => {
+      getPostList({
+        categoryId: this.categoryId,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+      }).then((res) => {
         if (res.code === 0) {
           this.$store.commit("setPostList", res.rows);
           // 把所有封面存于数组,用户图片预览
@@ -296,7 +316,17 @@ export default {
       categoryId: "categoryId",
       categoryName: "categoryName",
       color: "color",
+      loadEnd: "loadEnd",
+      pageSize: "pageSize",
     }),
+    pageNum: {
+      get() {
+        return this.$store.state.pageNum;
+      },
+      set(payload) {
+        this.$store.commit("setPageNum", payload);
+      },
+    },
     postDetailShow: {
       get() {
         return this.$store.state.postDetailShow;
@@ -335,7 +365,7 @@ export default {
 <style lang="less">
 @main-bg-color: #e8ecf3;
 @main-color: #667c99;
-@username-font-size: 0.8rem;
+@username-font-size: 0.7rem;
 @font-size: 0.9rem;
 @intro-font-size: 0.8rem;
 @intro-color: #666666;
@@ -406,12 +436,14 @@ export default {
               overflow: hidden;
               img {
                 border-radius: 6px;
-                width: 100px !important;
+                width: 100%;
               }
             }
             // introduction
             .intro {
-              margin: 2px 0;
+              margin: 5px 0;
+              width: 100%;
+              text-align: center;
               color: @intro-color;
               font-size: @intro-font-size;
             }

@@ -220,6 +220,21 @@ export default {
     };
   },
   methods: {
+    // 获取帖子列表
+    initPostsList() {
+      // 获取页数
+      getPostList({
+        categoryId: this.categoryId,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+      }).then((res) => {
+        if (res.code === 0) {
+          this.$store.dispatch("setReversePostList", res);
+        } else {
+          this.$message.warning(res.msg);
+        }
+      });
+    },
     // 开局先判断类别 (分类标签)
     getPostCategoryList() {
       getTopicsList().then((res) => {
@@ -240,94 +255,41 @@ export default {
     },
     // 下拉刷新
     onRefresh() {
-      // 下拉刷新起始页
-      this.pageNum = 1;
-      // 重置加载到底状态
-      this.$store.commit("setLoadEnd", false);
-      getPostList({
-        categoryId: this.categoryId,
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-      }).then((res) => {
-        if (res.code === 0) {
-          if (res.rows.length === 0) {
-            this.$message.warning("此分类目前还没有什么东西~");
-          } else {
-            // 初始化触底是否需要再加载状态 (小于一页的情况)
-            if (this.pageSize >= res.total) {
-              this.$store.commit("setLoadEnd", true);
-            } else {
-              this.$store.commit("setLoadEnd", false);
-            }
-            this.$store.commit("setPostList", res.rows);
-            this.$store.commit("setPreviewImgList", res.rows);
-          }
-          setTimeout(() => {
-            this.$message.success(" 刷新成功 ~");
-            this.isLoading = false;
-          }, 500);
-        } else {
-          this.$message.warning(res.msg);
-        }
-      });
+      this.isLoading = true;
+      this.initPostsList();
+      setTimeout(() => {
+        this.$message.success(" 刷新成功 ~");
+        this.isLoading = false;
+      }, 500);
     },
     // 触底加载更多
     onLoadMore() {
-      this.pageNum++;
-      this.loadingMore = true;
-      getPostList({
-        categoryId: this.categoryId,
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-      }).then((res) => {
-        if (res.code === 0) {
-          if (this.pageNum * this.pageSize >= res.total) {
-            if (this.loadEnd) {
-              this.$message.warning("没有更多了 ~");
-            } else {
-              this.$store.commit("setPostList", this.postList.concat(res.rows));
-              this.$store.commit("setLoadEnd", true);
-            }
-          } else {
-            this.$store.commit("setPostList", this.postList.concat(res.rows));
+      this.pageNum--;
+      if (this.pageNum <= 0) {
+        this.$message.warning("没有更多了 ~");
+      } else {
+        this.loadingMore = true;
+        getPostList({
+          categoryId: this.categoryId,
+          pageNum: this.pageNum,
+          pageSize: this.pageSize,
+        }).then((res) => {
+          if (res.code === 0) {
+            this.$store.commit(
+              "setPostList",
+              this.postList.concat(res.rows.reverse())
+            );
             this.$nextTick(() => {
               window.dispatchEvent(new Event("resize"));
             });
-          }
-          this.$store.commit("setPreviewImgList", res.rows);
-          // 结束加载动画
-          this.loadingMore = false;
-        } else {
-          console.log(res.msg);
-        }
-      });
-    },
-    // 获取帖子列表
-    getPostsList() {
-      getPostList({
-        categoryId: this.categoryId,
-        pageNum: this.pageNum,
-        pageSize: this.pageSize,
-      }).then((res) => {
-        if (res.code === 0) {
-          if (res.rows.length === 0) {
-            this.$message.warning("那个分类目前还没有什么东西~");
-          } else {
-            // 初始化触底是否需要再加载状态 (小于一页的情况)
-            if (this.pageSize >= res.total) {
-              this.$store.commit("setLoadEnd", true);
-            } else {
-              this.$store.commit("setLoadEnd", false);
-            }
-            this.$store.commit("setPostList", res.rows);
-            // 把所有封面存于数组,用户图片预览
-            this.$store.commit("clearPreviewImgList", []);
             this.$store.commit("setPreviewImgList", res.rows);
+            // 结束加载动画
+            this.loadingMore = false;
+          } else {
+            console.log(res.msg);
           }
-        } else {
-          this.$message.warning(res.msg);
-        }
-      });
+        });
+      }
     },
     // 显示帖子详情 (item 为当前帖子)
     showPostDetail(item) {
@@ -364,7 +326,7 @@ export default {
   },
   created() {
     // 获取帖子列表
-    this.getPostsList();
+    this.initPostsList();
     // 获取帖子分类标签名
     this.getPostCategoryList();
     // 加载状态
@@ -378,8 +340,8 @@ export default {
       postList: "postList",
       categoryId: "categoryId",
       color: "color",
-      loadEnd: "loadEnd",
       pageSize: "pageSize",
+      total: "total",
       previewImgList: "previewImgList",
     }),
     pageNum: {

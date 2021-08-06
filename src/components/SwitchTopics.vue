@@ -75,35 +75,27 @@ export default {
         this.categoryList = tempCategoryList;
       });
     },
+    // 获取帖子列表
+    initPostsList() {
+      // 获取页数
+      getPostList({
+        categoryId: this.categoryId,
+        pageNum: this.pageNum,
+        pageSize: this.pageSize,
+      }).then((res) => {
+        if (res.code === 0) {
+          this.$store.dispatch("setReversePostList", res);
+        } else {
+          this.$message.warning(res.msg);
+        }
+      });
+    },
     // 获取点击分类 Id
     switchCategory(categoryId) {
       // 设置 categoryId
       this.$store.commit("setCategoryId", categoryId);
       localStorage.setItem("categoryId", JSON.stringify(categoryId));
-      getPostList({
-        categoryId: this.categoryId,
-        pageNum: 1,
-        pageSize: this.pageSize,
-      }).then((res) => {
-        if (res.code === 0) {
-          if (res.rows.length === 0) {
-            this.$message.warning("那个分类目前还没有什么东西~");
-          } else {
-            // 初始化触底是否需要再加载状态 (小于一页的情况)
-            if (this.pageSize >= res.total) {
-              this.$store.commit("setLoadEnd", true);
-            } else {
-              this.$store.commit("setLoadEnd", false);
-            }
-            this.$store.commit("setPostList", res.rows);
-            // 把所有封面存于数组,用户图片预览
-            this.$store.commit("clearPreviewImgList", []);
-            this.$store.commit("setPreviewImgList", res.rows);
-          }
-        } else {
-          this.$message.warning(res.msg);
-        }
-      });
+      this.initPostsList();
       this.switchTopicsShow = false;
     },
   },

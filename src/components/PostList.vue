@@ -157,7 +157,10 @@
                   </div>
                 </div>
                 <div class="readnum">
-                  <a-icon type="eye" />{{ item.readNum }}
+                  <a-icon type="eye" />
+                  <span>
+                    {{ item.readNum }}
+                  </span>
                 </div>
               </div>
             </van-skeleton>
@@ -401,7 +404,7 @@ export default {
 @main-color: #667c99;
 @username-font-size: 0.7rem;
 @font-size: 0.9rem;
-@intro-font-size: 0.8rem;
+@intro-font-size: 1rem;
 @intro-color: #666666;
 @sendtime-font-size: 0.6rem;
 
@@ -475,7 +478,7 @@ export default {
             }
             // introduction
             .intro {
-              margin: 5px 0;
+              padding: 5px 40px 15px 0;
               width: 100%;
               text-align: center;
               color: @intro-color;
@@ -509,7 +512,7 @@ export default {
                     border: none;
                     .category-name {
                       margin: 0;
-                      padding: 0 6px;
+                      padding: 1px 6px 0;
                       height: 100%;
                       font-size: 0.6rem;
                       border-radius: 4px;
@@ -549,9 +552,17 @@ export default {
         position: relative;
         top: 5px;
         right: 5px;
-        padding: 2px 10px;
+        padding: 0 4px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         border-radius: 4px;
+        font-size: 0.8rem;
         background-color: @main-bg-color;
+        i {
+          margin-right: 4px;
+          font-size: 0.5rem;
+        }
       }
     }
   }

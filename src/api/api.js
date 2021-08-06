@@ -141,3 +141,28 @@ export function getCommentsList({ postsId, pageNum = 1, pageSize = 10 }) {
 
   return axios.post("/forum/api/bbs/bbsComment/open/list", formData);
 }
+/*
+  发表评论
+  postsId: 帖子 Id; commentContent:发表的内容
+*/
+export function postComment({ postsId, commentContent }) {
+  let formData = new FormData();
+  formData.append("postsId", postsId);
+  formData.append("commentContent", commentContent);
+  return axios.post("/forum/api/bbs/bbsComment/site/add", formData);
+}
+
+// 评论回复列表
+export function getReplyList(commentId) {
+  let formData = new FormData();
+  formData.append("parentId", commentId);
+  return axios.post("/forum/api/bbs/bbsComment/open/reply/list", formData);
+}
+
+/*
+  点赞
+  // articleId:帖子Id
+*/
+export function like(articleId) {
+  return axios.get(`/forum/api/cms/article/add/zan/${articleId}_1611232428940`);
+}

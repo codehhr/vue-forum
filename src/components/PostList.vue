@@ -557,7 +557,7 @@ export default {
         align-items: center;
         justify-content: space-between;
         border-radius: 4px;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         background-color: @main-bg-color;
         i {
           margin-right: 4px;

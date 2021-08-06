@@ -10,11 +10,30 @@
 </template>
 
 <script>
+import { getPostList } from "../api/api";
+
 export default {
   name: "Search",
   methods: {
-    onSearch(v) {
-      console.log(v);
+    onSearch(keywords) {
+      console.log(keywords);
+      getPostList({ title: keywords }).then((res) => {
+        if (res.code === 0) {
+          this.$store.commit("setPostList", res.rows);
+        } else {
+          this.$message.warning(res.msg);
+        }
+      });
+    },
+  },
+  computed: {
+    postList: {
+      get() {
+        return this.$store.state.postList;
+      },
+      set(payload) {
+        this.$store.commit("setPostList", payload);
+      },
     },
   },
 };

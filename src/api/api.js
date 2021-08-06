@@ -133,7 +133,7 @@ export function uploadImg({ file, fileUseForEnum }) {
   评论列表
   // postsId:帖子 Id; pageNum:页码 (可选); pageSize:每页个数 (可选)
 */
-export function getCommentsList(postsId, pageNum = 1, pageSize = 10) {
+export function getCommentsList({ postsId, pageNum = 1, pageSize = 10 }) {
   let formData = new FormData();
   formData.append("postsId", postsId);
   formData.append("pageNum", pageNum);

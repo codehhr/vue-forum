@@ -109,7 +109,11 @@
                 <a-avatar
                   class="post-item-avatar"
                   slot="avatar"
-                  :src="item.avatar"
+                  :src="
+                    item
+                      ? item.avatar
+                      : 'https://b.yzcdn.cn/vant/icon-demo-1126.png'
+                  "
                 />
                 <div class="post-item-middle">
                   <span class="username" v-text="item.userName"></span>

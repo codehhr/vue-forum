@@ -119,6 +119,17 @@ export function newPost({ categoryId, title, subTitle, intro, coverImgUrl }) {
 }
 
 /*
+  上传图片
+  // file:文件类型; fileUseForEnum:上传图片用于什么地方,可选参数（BBS/DEFAULT/RICH_TEXT/AVATAR/CMS/SHOP/BBS）
+*/
+export function uploadImg({ file, fileUseForEnum }) {
+  let formData = new FormData();
+  formData.append("file", file);
+  formData.append("fileUseForEnum", fileUseForEnum);
+  return axios.post("/forum/api/nos/upload/image", formData);
+}
+
+/*
   评论列表
   // postsId:帖子 Id; pageNum:页码 (可选); pageSize:每页个数 (可选)
 */

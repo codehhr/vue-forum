@@ -86,7 +86,7 @@ export function modifyUserInfo({ userName, email, phonenumber, sex, remark }) {
   请求帖子列表
 */
 export function getPostList({
-  categoryId,
+  categoryId = "",
   title = "",
   pageNum = 1,
   pageSize = 20,

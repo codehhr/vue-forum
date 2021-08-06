@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import { getUserInfo } from "../api/api";
+import { getUserInfo, getPostList } from "../api/api";
 
 Vue.use(Vuex);
 
@@ -22,16 +22,19 @@ export default new Vuex.Store({
     color: "",
     // 显示帖子详情页
     postDetailShow: false,
-    // 加载最后一页数据
-    loadEnd: false,
     // 页码
     pageNum: 1,
     // 每页个数
     pageSize: 10,
+    // 数据个数
+    total: null,
     // 图片预览数组
     previewImgList: [],
   },
   mutations: {
+    setTotal(state, payload) {
+      state.total = payload;
+    },
     clearPreviewImgList(state, payload) {
       state.previewImgList = payload;
     },
@@ -43,9 +46,6 @@ export default new Vuex.Store({
     },
     setPageSize(state, payload) {
       state.pageSize = payload;
-    },
-    setLoadEnd(state, payload) {
-      state.loadEnd = payload;
     },
     setPostDetailShow(state, payload) {
       state.postDetailShow = payload;
@@ -145,6 +145,25 @@ export default new Vuex.Store({
             userInfo: null,
           });
         }
+      });
+    },
+    //
+    // 开始加载时获取帖子列表
+    setReversePostList(context, payload) {
+      context.commit(
+        "setPageNum",
+        Math.ceil(payload.total / this.state.pageSize)
+      );
+      context.commit("setTotal", payload.total);
+      getPostList({
+        categoryId: this.state.categoryId,
+        pageNum: this.state.pageNum,
+        pageSize: this.state.pageSize,
+      }).then((res) => {
+        context.commit("setPostList", res.rows.reverse());
+        // 把所有封面存于数组,用户图片预览
+        context.commit("clearPreviewImgList", []);
+        context.commit("setPreviewImgList", res.rows);
       });
     },
   },

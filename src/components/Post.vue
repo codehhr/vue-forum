@@ -49,7 +49,7 @@
         type="textarea"
         name="intro"
         label="描述"
-        placeholder="描述"
+        placeholder="描述 ( 支持副文本 )"
         :rules="[{ required: true, message: '请填写描述' }]"
       />
       <!-- 上传封面 -->

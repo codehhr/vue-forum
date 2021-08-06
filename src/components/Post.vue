@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { getTopicsList, newPost } from "../api/api";
+import { getTopicsList, newPost, uploadImg } from "../api/api";
 
 export default {
   name: "Post",
@@ -100,17 +100,43 @@ export default {
       });
       this.categoryList = topicList;
     },
+    // 发表前先上传图片
+    uploadImgBeforePublish(fileObj) {
+      uploadImg({
+        file: fileObj.file,
+        fileUseForEnum: fileObj.fileUseForEnum,
+      }).then((uploadImgRes) => {
+        if (uploadImgRes.code === 0) {
+          // 同步实现先上传图片再发表
+          // 把图片加入 values
+          fileObj.values.url = uploadImgRes.url;
+          this.post(fileObj.values);
+        } else {
+          this.$message.warning(uploadImgRes.msg);
+        }
+      });
+    },
     // 提交
     submitPost(values) {
+      // 上传图片
+      this.uploadImgBeforePublish({
+        file: values.coverImgUrl[0].file,
+        fileUseForEnum: "BBS",
+        values,
+      });
+    },
+    // 发表
+    post(values) {
       newPost({
         categoryId: this.categoryList.indexOf(values.categoryId) + 1,
         title: values.title,
         subTitle: values.subTitle,
         intro: values.intro,
-        coverImgUrl: values.coverImgUrl[0].url,
+        coverImgUrl: values.url,
       })
         .then((res) => {
           if (res.code === 0) {
+            // 关闭发表页
             this.$emit("closeEditorAfterPost", false);
             this.$message.success("发表成功 ~");
           } else {

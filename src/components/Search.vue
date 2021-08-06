@@ -16,7 +16,6 @@ export default {
   name: "Search",
   methods: {
     onSearch(keywords) {
-      console.log(keywords);
       getPostList({ title: keywords }).then((res) => {
         if (res.code === 0) {
           this.$store.commit("setPostList", res.rows);

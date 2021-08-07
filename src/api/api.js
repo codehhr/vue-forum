@@ -23,7 +23,7 @@ export function logOut() {
 
 /*
   忘记密码
-  // userName:昵称; password:密码; phonenumber:手机号; code:验证码
+  userName:昵称; password:密码; phonenumber:手机号; code:验证码
 */
 export function forgetPassword({ loginName, password, phonenumber, code }) {
   let formData = new FormData();
@@ -36,7 +36,7 @@ export function forgetPassword({ loginName, password, phonenumber, code }) {
 
 /*
   注册
-  // loginName 登录名称; password:密码; userName:昵称; phonenumber:手机号; code:验证码; sex:性别; remark:个性签名
+  loginName 登录名称; password:密码; userName:昵称; phonenumber:手机号; code:验证码; sex:性别; remark:个性签名
 */
 export function register({
   loginName,
@@ -70,7 +70,7 @@ export function getUserInfo() {
 
 /*
   修改个人信息
-  // userName:昵称; email:邮箱; phonenumber:手机号; sex:性别; remark:个性签名
+  userName:昵称; email:邮箱; phonenumber:手机号; sex:性别; remark:个性签名
 */
 export function modifyUserInfo({ userName, email, phonenumber, sex, remark }) {
   let formData = new FormData();
@@ -106,7 +106,7 @@ export function getPostDetail(postsId) {
 
 /* 
   创建帖子
-  // 分类 Id ,类型(可选) ,标题 ,子标题(可选) , 描述 ,副文本(可选) ,封面
+  分类 Id ,类型(可选) ,标题 ,子标题(可选) , 描述 ,副文本(可选) ,封面
 */
 export function newPost({ categoryId, title, subTitle, intro, coverImgUrl }) {
   let formData = new FormData();
@@ -120,7 +120,7 @@ export function newPost({ categoryId, title, subTitle, intro, coverImgUrl }) {
 
 /*
   上传图片
-  // file:文件类型; fileUseForEnum:上传图片用于什么地方,可选参数（BBS/DEFAULT/RICH_TEXT/AVATAR/CMS/SHOP/BBS）
+  file:文件类型; fileUseForEnum:上传图片用于什么地方,可选参数（BBS/DEFAULT/RICH_TEXT/AVATAR/CMS/SHOP/BBS）
 */
 export function uploadImg({ file, fileUseForEnum }) {
   let formData = new FormData();
@@ -131,7 +131,7 @@ export function uploadImg({ file, fileUseForEnum }) {
 
 /*
   评论列表
-  // postsId:帖子 Id; pageNum:页码 (可选); pageSize:每页个数 (可选)
+  postsId:帖子 Id; pageNum:页码 (可选); pageSize:每页个数 (可选)
 */
 export function getCommentsList({ postsId, pageNum = 1, pageSize = 10 }) {
   let formData = new FormData();
@@ -161,8 +161,39 @@ export function getReplyList(commentId) {
 
 /*
   点赞
-  // articleId:帖子Id
+  articleId:帖子Id
 */
 export function like(articleId) {
   return axios.get(`/forum/api/cms/article/add/zan/${articleId}_1611232428940`);
+}
+
+// 我参与的
+export function aboutMe() {
+  return axios.post("/forum/api/bbs/bbsPosts/join/list");
+}
+
+// 删除帖子
+export function removePost(postsId) {
+  let formData = new FormData();
+  formData.append("ids", postsId);
+  return axios.post("/forum/api/bbs/bbsPosts/site/remove", formData);
+}
+
+// 修改帖子
+export function editPost({
+  postsId,
+  title,
+  subTitle,
+  categoryId,
+  intro,
+  coverImgUrl,
+}) {
+  let formData = new FormData();
+  formData.append("postsId", postsId);
+  formData.append("categoryId", categoryId);
+  formData.append("title", title);
+  formData.append("subTitle", subTitle);
+  formData.append("intro", intro);
+  formData.append("coverImgUrl", coverImgUrl);
+  return axios.post("/forum/api/bbs/bbsPosts/site/edit", formData);
 }

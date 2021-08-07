@@ -1,7 +1,7 @@
 <template>
   <div v-show="alreadyLogin" @click="goToAbout" class="about-me-entrance">
-    <a-icon class="bell-icon" type="sound" />
-    <span>关于我的</span>
+    <a-icon class="bell-icon" type="bell" />
+    <span>我参与的</span>
   </div>
 </template>
 

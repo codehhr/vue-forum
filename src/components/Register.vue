@@ -155,7 +155,9 @@
         <a-button type="primary" html-type="submit" class="register-form-btn">
           注册
         </a-button>
-        <router-link class="go-to-login" to="/login">去登录</router-link>
+        <router-link class="go-to-login" :to="{ name: 'login' }"
+          >去登录</router-link
+        >
       </a-form-item>
     </a-form>
   </div>

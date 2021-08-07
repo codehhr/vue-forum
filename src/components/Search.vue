@@ -10,15 +10,24 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 import { getPostList } from "../api/api";
 
 export default {
   name: "Search",
   methods: {
     onSearch(keywords) {
-      getPostList({ title: keywords }).then((res) => {
+      this.$store.commit("setSearchTitle", keywords);
+      getPostList({
+        title: this.searchTitle,
+        pageNum: "",
+        pageSize: "",
+      }).then((res) => {
         if (res.code === 0) {
-          this.$store.commit("setPostList", res.rows);
+          this.categoryId = "";
+          this.pageNum = Math.ceil(res.total / this.pageSize);
+          this.$store.dispatch("setReversePostList", res);
+          this.$emit("closePopUpAfterSearch", false);
         } else {
           this.$message.warning(res.msg);
         }
@@ -26,12 +35,24 @@ export default {
     },
   },
   computed: {
-    postList: {
+    ...mapState({
+      searchTitle: "searchTitle",
+      pageSize: "pageSize",
+    }),
+    pageNum: {
       get() {
-        return this.$store.state.postList;
+        return this.$store.state.pageNum;
       },
       set(payload) {
-        this.$store.commit("setPostList", payload);
+        this.$store.commit("setPageNum", payload);
+      },
+    },
+    categoryId: {
+      get() {
+        return this.$store.state.categoryId;
+      },
+      set(payload) {
+        this.$store.commit("setCategoryId", payload);
       },
     },
   },

@@ -109,7 +109,7 @@ export default {
     align-items: flex-start;
     justify-content: flex-start;
     > div {
-      padding: 18px 20px;
+      padding: 12px 20px;
       width: 100%;
       text-align: left;
       border-radius: 20px;

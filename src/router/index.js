@@ -7,14 +7,18 @@ import UserCenter from "../views/UserCenter";
 import Agreement from "../components/Agreement";
 import ForgetPassword from "../components/ForgetPassword";
 import AboutMe from "../components/AboutMe";
+import PostDetail from "../components/PostDetail";
+import Post from "../components/Post";
+import EditPost from "../components/EditPost";
 import { getUserInfo } from "../api/api";
+import Site from "../components/Site";
 
 Vue.use(VueRouter);
 
 const routes = [
   // 首页
   {
-    path: "/",
+    path: "/index",
     name: "index",
     component: Index,
   },
@@ -39,6 +43,30 @@ const routes = [
       requireLogin: true,
     },
   },
+  // 发表新帖
+  {
+    path: "/post",
+    name: "post",
+    component: Post,
+    meta: {
+      requireLogin: true,
+    },
+  },
+  // 编辑帖子
+  {
+    path: "/editpost/:postsId",
+    name: "editpost",
+    component: EditPost,
+    meta: {
+      requireLogin: true,
+    },
+  },
+  // 帖子详情
+  {
+    path: "/postdetail/:postsId",
+    name: "PostDetail",
+    component: PostDetail,
+  },
   // 协议
   {
     path: "/agreement",
@@ -51,7 +79,7 @@ const routes = [
     name: "forgetPassword",
     component: ForgetPassword,
   },
-  // 关于我的
+  // 我参与的
   {
     path: "/about",
     name: "about",
@@ -59,6 +87,12 @@ const routes = [
     meta: {
       requireLogin: true,
     },
+  },
+  // 关于本站
+  {
+    path: "/site",
+    name: "site",
+    component: Site,
   },
 ];
 
@@ -76,7 +110,7 @@ router.beforeEach((to, from, next) => {
       if (res.code === 0) {
         next();
       } else {
-        next("/");
+        next("/index");
       }
     });
   } else {

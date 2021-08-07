@@ -1,7 +1,8 @@
 <template>
   <div class="post">
+    <go-back></go-back>
     <!-- form -->
-    <van-form @submit="submitPost" @failed="onFailed">
+    <van-form class="post-form" @submit="submitPost" @failed="onFailed">
       <!-- 分类选择 -->
       <van-field
         readonly
@@ -55,7 +56,7 @@
       <!-- 上传封面 -->
       <van-field class="form-item" name="coverImgUrl" label="文件上传">
         <template #input>
-          <van-uploader v-model="uploader" />
+          <van-uploader v-model="uploader" multiple :max-count="1" />
         </template>
       </van-field>
       <div class="form-item">
@@ -64,21 +65,29 @@
         >
       </div>
     </van-form>
+    <!-- 遮罩层 -->
+    <div v-show="showMask" class="mask">
+      <van-loading vertical size="80" color="#ffffff" class="loading">
+        发布中...
+      </van-loading>
+    </div>
   </div>
 </template>
 
 <script>
 import { getTopicsList, newPost, uploadImg } from "../api/api";
+import GoBack from "./GoBack";
 
 export default {
   name: "Post",
   data() {
     return {
+      showMask: false,
       category: "",
       title: "",
       subTitle: "",
       intro: "",
-      uploader: [{ url: "https://img01.yzcdn.cn/vant/leaf.jpg" }],
+      uploader: [],
       categoryList: [],
       showPicker: false,
       showDialog: false,
@@ -118,6 +127,7 @@ export default {
     },
     // 提交
     submitPost(values) {
+      this.showMask = true;
       // 上传图片
       this.uploadImgBeforePublish({
         file: values.coverImgUrl[0].file,
@@ -136,9 +146,9 @@ export default {
       })
         .then((res) => {
           if (res.code === 0) {
-            // 关闭发表页
-            this.$emit("closeEditorAfterPost", false);
             this.$message.success("发表成功 ~");
+            this.showMask = false;
+            this.$router.push({ name: "index" });
           } else {
             this.$message.warning(res.msg);
           }
@@ -152,7 +162,9 @@ export default {
       this.$message.warning(err);
     },
   },
-  components: {},
+  components: {
+    GoBack,
+  },
   created() {
     this.renderPickerList();
   },
@@ -163,8 +175,21 @@ export default {
 @main-color: #667c99;
 @main-font-size: 0.9rem;
 @submit-btn-font-size: 1rem;
-
 .post {
+  position: relative;
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.post-form {
   height: 100%;
   padding: 40px 20px 0;
   .form-item {
@@ -175,5 +200,19 @@ export default {
     font-size: @submit-btn-font-size;
     background-color: @main-color;
   }
+}
+</style>
+<style>
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.block {
+  width: 120px;
+  height: 120px;
+  background-color: #fff;
 }
 </style>

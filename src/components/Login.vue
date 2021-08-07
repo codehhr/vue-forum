@@ -58,10 +58,10 @@
         </a-button>
       </a-form-item>
       <div class="form-footer">
-        <router-link class="register-right-now" to="/register"
+        <router-link class="register-right-now" :to="{ name: 'register' }"
           >立即注册</router-link
         >
-        <router-link class="forgot-password" to="/forget-password"
+        <router-link class="forgot-password" :to="{ name: 'forgetPassword' }"
           >忘记密码</router-link
         >
       </div>

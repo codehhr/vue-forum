@@ -1,60 +1,43 @@
 <template>
   <div class="user">
     <go-home></go-home>
-    <!-- 头像 start -->
-    <div class="card">
-      <div class="mask"></div>
-      <div class="change-avatar">
-        <div
-          class="avatar"
-          :style="
-            `background: url(${
-              alreadyLogin
-                ? userInfo.avatar
-                  ? userInfo.avatar
-                  : 'https://b.yzcdn.cn/vant/icon-demo-1126.png'
-                : 'https://b.yzcdn.cn/vant/icon-demo-1126.png'
-            }) 50% 50% no-repeat`
-          "
-        ></div>
-        <div class="username">
-          {{ userInfo ? userInfo.userName : "~" }}
-        </div>
-        <div class="remark">
-          {{
-            userInfo
-              ? userInfo.remark == 0
-                ? "这个人很懒，什么都没有写……"
-                : userInfo.remark
-              : "这个人很懒，什么都没有写……"
-          }}
-        </div>
-
-        <!-- 头像上传 start -->
+    <!-- card start -->
+    <a-card hoverable style="width: 100%">
+      <img
+        slot="cover"
+        alt="封面"
+        src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+      />
+      <template slot="actions" class="ant-card-actions">
         <a-upload
           name="avatarfile"
+          class="upload-avatar"
           action="/forum/api/system/user/profile/update/avatar/nos"
           @change="handleChange"
           :showUploadList="false"
         >
-          <div class="upload">
-            <a-button class="upload-btn">
-              <a-icon class="upload-icon" type="upload" />
-              <span>更改头像</span>
-            </a-button>
-          </div>
+          <a-icon key="setting" type="setting" class="setting" />
         </a-upload>
-        <!-- 头像上传 end -->
-      </div>
-    </div>
-    <!-- 头像 end -->
+        <a-icon key="edit" type="edit" @click="showModifyUserInfoPopup" />
+        <a-icon key="ellipsis" type="ellipsis" @click="extra" />
+      </template>
+      <a-card-meta
+        :title="userInfo ? userInfo.userName : '昵称'"
+        :description="userInfo ? userInfo.remark : '这个人很懒，什么都没有写……'"
+      >
+        <a-avatar
+          slot="avatar"
+          :src="
+            userInfo
+              ? userInfo.avatar
+              : 'https://b.yzcdn.cn/vant/icon-demo-1126.png'
+          "
+        />
+      </a-card-meta>
+    </a-card>
+    <!-- card end -->
 
     <div class="user-info">
-      <div class="user-info-item">
-        <div class="username">
-          <span>昵称 : </span>{{ userInfo ? userInfo.userName : "userName" }}
-        </div>
-      </div>
       <div class="user-info-item">
         <div class="email">
           <span>邮箱 : </span>{{ userInfo ? userInfo.email : "email" }}
@@ -72,9 +55,6 @@
           {{ userInfo ? (userInfo.sex == 0 ? "男" : "女") : "sex" }}
         </div>
       </div>
-      <van-cell class="modify-userinfo-btn" @click="showModifyUserInfoPopup">
-        <a-button icon="setting">修改个人信息</a-button>
-      </van-cell>
       <van-popup
         class="modify-userinfo-popup"
         position="right"
@@ -153,6 +133,9 @@ export default {
     };
   },
   methods: {
+    extra() {
+      this.$message.warning("啥也没有");
+    },
     // 更改头像
     handleChange(info) {
       if (this.$store.state.alreadyLogin) {
@@ -223,49 +206,8 @@ export default {
 
 .user {
   height: 100vh;
-  .card {
-    position: relative;
-    height: 40%;
-    .mask {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: #494f5ca6;
-      z-index: -1;
-    }
-    background-size: cover;
-    .change-avatar {
-      padding-bottom: 20px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      .avatar {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background-size: cover !important;
-        overflow: hidden;
-      }
-      .username,
-      .remark {
-        margin: 6px 0;
-        font-size: 1.2rem;
-        color: #000000aa;
-      }
-      .upload {
-        .upload-btn {
-          border: none;
-        }
-      }
-    }
-  }
   .user-info {
-    padding: 40px;
-    height: calc(100vw - 46px);
+    padding: 20px 40px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -291,5 +233,11 @@ export default {
       }
     }
   }
+}
+</style>
+<style lang="less">
+.ant-card-actions > li {
+  margin: 0 !important;
+  padding: 10px 0;
 }
 </style>

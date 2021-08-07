@@ -15,17 +15,19 @@
       <!-- 发表新帖 -->
       <template v-slot:right>
         <!-- editor-btn -->
-        <a-button @click="showEditorPopup" class="edit-btn" icon="form" />
-        <!-- editor -->
+        <router-link :to="{ name: 'post' }">
+          <a-button @click="checkAlreadyLogin" class="edit-btn" icon="form" />
+        </router-link>
+        <!-- editor
         <van-popup class="editor-popup" position="right" v-model="editorShow">
-          <!-- 返回 -->
+          返回
           <go-back @close="closeEditor"></go-back>
-          <!-- post -->
+          post
           <post
             @closeEditorAfterPost="closeEditorAfterPost"
             class="post"
           ></post>
-        </van-popup>
+        </van-popup> -->
       </template>
     </page-header>
     <!-- 顶部 end -->
@@ -41,47 +43,34 @@ import PageHeader from "../components/PageHeader";
 import HeaderNav from "../components/HeaderNav";
 import SwitchTopics from "../components/SwitchTopics";
 import PostList from "../components/PostList";
-// import { mapState } from "vuex";
-import GoBack from "../components/GoBack";
-import Post from "../components/Post";
+import { mapState } from "vuex";
 
 export default {
   name: "Index",
-  data() {
-    return {
-      // 显示编辑器
-      editorShow: false,
-    };
-  },
   methods: {
-    // 显示发表页
-    showEditorPopup() {
-      this.editorShow = true;
-    },
-    closeEditor(data) {
-      this.editorShow = data;
-    },
-    // 确认发表
-    confirmPublish() {
-      this.showDialog = true;
-    },
-    // 发表后回关闭编辑页
-    closeEditorAfterPost(data) {
-      this.editorShow = data;
+    // 确认登录
+    checkAlreadyLogin() {
+      if (this.alreadyLogin) {
+        return;
+      } else {
+        this.$message.warning("请先登录 ~");
+      }
     },
   },
   mounted() {
     this.container = this.$refs.container;
   },
   created() {},
-  computed: {},
   components: {
     PageHeader,
     HeaderNav,
     SwitchTopics,
     PostList,
-    Post,
-    GoBack,
+  },
+  computed: {
+    ...mapState({
+      alreadyLogin: "alreadyLogin",
+    }),
   },
 };
 </script>

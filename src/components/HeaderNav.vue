@@ -6,12 +6,20 @@
     <!-- 左侧弹出框 start -->
     <van-popup class="nav-popup" position="left" v-model="navShow">
       <!-- 搜索组件 -->
-      <search></search>
+      <search @closePopUpAfterSearch="closePopup"></search>
+
+      <!-- 关于本站 -->
+      <div>
+        <router-link :to="{ name: 'site' }">
+          <a-icon class="bell-icon" type="sound" />
+          <span>关于本站</span>
+        </router-link>
+      </div>
 
       <!-- 登录注册入口组件 -->
       <signin-entrance></signin-entrance>
 
-      <!-- 关于我的 -->
+      <!-- 我参与的 -->
       <about-entrance></about-entrance>
 
       <!-- 个人中心入口组件 -->
@@ -22,10 +30,10 @@
 </template>
 
 <script>
-import Search from "../components/Search";
-import SigninEntrance from "../components/SigninEntrance";
-import UserEntrance from "../components/UserEntrance";
-import AboutEntrance from "../components/AboutEntrance";
+import Search from "./Search";
+import UserEntrance from "./UserEntrance";
+import AboutEntrance from "./AboutEntrance";
+import SigninEntrance from "./SigninEntrance";
 
 export default {
   name: "HeaderNav",
@@ -44,14 +52,16 @@ export default {
   },
   components: {
     Search,
-    SigninEntrance,
     UserEntrance,
     AboutEntrance,
+    SigninEntrance,
   },
 };
 </script>
 
 <style scoped lang="less">
+@font-size: 1rem;
+
 .header-nav {
   user-select: none;
   .nav-btn {
@@ -68,7 +78,28 @@ export default {
     align-items: flex-start;
     justify-content: flex-start;
     > div {
+      width: 100%;
       height: 46px;
+      i {
+        width: 24px;
+        height: 24px;
+        font-size: @font-size;
+      }
+      a {
+        border-radius: 20px;
+        &:active {
+          background-color: #e8ecf3;
+        }
+        padding: 0 10px;
+        height: 100%;
+        width: 100% !important;
+        text-align: left;
+        span {
+          margin: 0 10px;
+          font-size: @font-size;
+          line-height: 46px;
+        }
+      }
     }
   }
 }

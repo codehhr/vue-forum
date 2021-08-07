@@ -82,6 +82,7 @@ export default {
         categoryId: this.categoryId,
         pageNum: this.pageNum,
         pageSize: this.pageSize,
+        title: this.searchTitle,
       }).then((res) => {
         if (res.code === 0) {
           this.$store.dispatch("setReversePostList", res);
@@ -93,6 +94,7 @@ export default {
     // 获取点击分类 Id
     switchCategory(categoryId) {
       // 设置 categoryId
+      this.$store.commit("setSearchTitle", "");
       this.$store.commit("setCategoryId", categoryId);
       localStorage.setItem("categoryId", JSON.stringify(categoryId));
       this.initPostsList();
@@ -108,6 +110,7 @@ export default {
     ...mapState({
       categoryId: "categoryId",
       pageSize: "pageSize",
+      searchTitle: "searchTitle",
     }),
     pageNum: {
       get() {

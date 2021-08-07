@@ -2,14 +2,14 @@
   <div v-show="!alreadyLogin" class="signin-entrance">
     <!-- 登录 -->
     <div class="login">
-      <router-link to="/login">
+      <router-link :to="{ name: 'login' }">
         <van-button class="login-btn">登录</van-button>
       </router-link>
     </div>
 
     <!-- 注册 -->
     <div class="register">
-      <router-link to="/register">
+      <router-link :to="{ name: 'register' }">
         <van-button class="register-btn">注册</van-button>
       </router-link>
     </div>

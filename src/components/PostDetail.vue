@@ -1,6 +1,6 @@
 <template>
   <div class="postdetail">
-    <go-back @close="closePostDetailPopup"></go-back>
+    <go-back></go-back>
     <div class="post-detail-outer">
       <div class="post-detail">
         <div class="post-detail-header">
@@ -19,10 +19,7 @@
             </template>
             <template v-slot:title>
               <div>
-                <h2
-                  class="post-title"
-                  v-html="postItemAndCategoryList.postItem.title"
-                ></h2>
+                <h2 class="post-title" v-html="postItem.title"></h2>
               </div>
             </template>
           </announcement>
@@ -33,39 +30,30 @@
           <div
             class="avatar"
             :style="
-              'background: url(' +
-                postItemAndCategoryList.postItem.avatar +
-                ') center center no-repeat'
+              'background: url(' + postItem.avatar + ') center center no-repeat'
             "
           ></div>
           <!-- content -->
           <div class="post-detail-content">
-            <img
-              class="cover"
-              :src="postItemAndCategoryList.postItem.coverImgUrl"
-              alt=""
-            />
-            <div
-              class="post-intro"
-              v-html="postItemAndCategoryList.postItem.intro"
-            ></div>
+            <van-skeleton title avatar :row="3" :loading="loading">
+              <img class="cover" :src="postItem.coverImgUrl" alt="" />
+              <div class="post-intro" v-html="postItem.intro"></div>
+            </van-skeleton>
             <div class="post-detail-content-footer">
               <div class="create-time">
                 <a-icon type="file-markdown" /><span
-                  >发表于{{ postItemAndCategoryList.postItem.sendTime }}</span
+                  >发表于{{ postItem.sendTime }}</span
                 >
               </div>
-              <div
-                v-show="postItemAndCategoryList.postItem.updateTime"
-                class="update-time"
-              >
+              <div v-show="postItem.updateTime" class="update-time">
                 <a-icon type="history" /><span
-                  >更新于{{ postItemAndCategoryList.postItem.updateTime }}</span
+                  >更新于{{ postItem.updateTime }}</span
                 >
               </div>
             </div>
           </div>
         </div>
+
         <!-- comments start -->
         <div class="post-detail-comments">
           <div class="comment">
@@ -112,35 +100,37 @@
             >
               <a-list-item slot="renderItem" slot-scope="item">
                 <div class="reply-list">
-                  <a-comment :author="item.userName" :avatar="item.avatar">
-                    <p v-html="item.commentContent" slot="content"></p>
-                    <a-tooltip slot="datetime" :title="item.updatedTime">
-                      <span>{{ item.updatedTime }}</span>
-                    </a-tooltip>
-                    <template slot="actions">
-                      <span key="comment-basic-like">
-                        <a-tooltip title="Like">
-                          <a-icon
-                            type="like"
-                            :theme="
-                              `action${item.commentId}` === `liked`
-                                ? 'filled'
-                                : 'outlined'
-                            "
-                            @click="like(item.commentId)"
-                          />
-                        </a-tooltip>
-                        <span
-                          :ref="`like${item.commentId}`"
-                          style="padding-left: '8px';cursor: 'auto'"
-                        >
-                          0
+                  <van-skeleton title avatar :row="3" :loading="loading">
+                    <a-comment :author="item.userName" :avatar="item.avatar">
+                      <p v-html="item.commentContent" slot="content"></p>
+                      <a-tooltip slot="datetime" :title="item.updatedTime">
+                        <span>{{ item.updatedTime }}</span>
+                      </a-tooltip>
+                      <template slot="actions">
+                        <span key="comment-basic-like">
+                          <a-tooltip title="Like">
+                            <a-icon
+                              type="like"
+                              :theme="
+                                `action${item.commentId}` === `liked`
+                                  ? 'filled'
+                                  : 'outlined'
+                              "
+                              @click="like(item.commentId)"
+                            />
+                          </a-tooltip>
+                          <span
+                            :ref="`like${item.commentId}`"
+                            style="padding-left: '8px';cursor: 'auto'"
+                          >
+                            0
+                          </span>
                         </span>
-                      </span>
-                      <a-divider type="vertical" />
-                      <span key="comment-basic-reply-to">回复</span>
-                    </template>
-                  </a-comment>
+                        <a-divider type="vertical" />
+                        <span key="comment-basic-reply-to">回复</span>
+                      </template>
+                    </a-comment>
+                  </van-skeleton>
                 </div>
               </a-list-item>
             </a-list>
@@ -156,7 +146,12 @@
 <script>
 import { mapState } from "vuex";
 import Announcement from "./Announcement";
-import { getCommentsList, postComment } from "../api/api";
+import {
+  getTopicsList,
+  getPostDetail,
+  getCommentsList,
+  postComment,
+} from "../api/api";
 import GoBack from "./GoBack";
 import moment from "moment";
 
@@ -164,6 +159,8 @@ export default {
   name: "PostDetail",
   data() {
     return {
+      // 骨架屏
+      loading: true,
       // 评论列表
       commentsList: [],
       submitting: false,
@@ -180,12 +177,12 @@ export default {
       postCategoryList: [],
     };
   },
-  props: {
-    // 从 postList 传过来的 item 和 分类的数组
-    postItemAndCategoryList: {
-      type: Object,
-    },
-  },
+  // props: {
+  //   // 从 postList 传过来的 item 和 分类的数组
+  //    {
+  //     type: Object,
+  //   },
+  // },
   methods: {
     // 点赞
     like(commentId) {
@@ -193,24 +190,27 @@ export default {
       this.$refs[`like${commentId}`].innerHTML = 1;
     },
     // 渲染数据
+    getTopicsListBeforeRrender() {
+      getTopicsList().then((res) => {
+        if (res.code === 0) {
+          this.postCategoryList = res.rows;
+          this.renderPostDetailCategoryName();
+        } else {
+          this.$message.warning(res.msg);
+        }
+      });
+    },
     // 渲染详情页标签名
     renderPostDetailCategoryName() {
-      // 渲染评论
-      this.renderCommentsList(this.postItemAndCategoryList.postItem.postsId);
+      this.getPostItem(this.$route.params.postsId);
       // 分类标签名
       let tagName = "";
-      this.postItemAndCategoryList.postCategoryList.forEach((item) => {
-        if (
-          item.categoryId == this.postItemAndCategoryList.postItem.categoryId
-        ) {
+      this.postCategoryList.forEach((item) => {
+        if (item.categoryId == this.postItem.categoryId) {
           tagName = item.name;
         }
       });
       return tagName;
-    },
-    // 关闭详情页
-    closePostDetailPopup() {
-      this.$store.commit("setPostDetailShow", false);
     },
     // 同步 data 于输入框里的值
     handleChange(e) {
@@ -224,16 +224,13 @@ export default {
         this.submitting = true;
         setTimeout(() => {
           this.submitting = false;
-
           postComment({
-            postsId: this.postItemAndCategoryList.postItem.postsId,
+            postsId: this.postItem.postsId,
             commentContent: this.userCommentValue,
           }).then((res) => {
             if (res.code === 0) {
               this.$message.success("提交成功");
-              this.renderCommentsList(
-                this.postItemAndCategoryList.postItem.postsId
-              );
+              this.renderCommentsList(this.postItem.postsId);
             }
           });
           this.userCommentValue = "";
@@ -247,12 +244,27 @@ export default {
         this.commentsList = res.rows;
       });
     },
+    getPostItem(postsId) {
+      getPostDetail(postsId).then((res) => {
+        if (res.code === 0) {
+          this.postItem = res.data;
+          // 渲染评论
+          this.renderCommentsList(this.postItem.postsId);
+        }
+      });
+    },
   },
   computed: {
     ...mapState({
       color: "color",
       userInfo: "userInfo",
     }),
+  },
+  created() {
+    this.getTopicsListBeforeRrender();
+  },
+  mounted() {
+    this.loading = false;
   },
   components: {
     Announcement,

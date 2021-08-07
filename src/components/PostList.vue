@@ -120,6 +120,7 @@
                   <div class="des">
                     <div class="des-intro">
                       <div class="title" v-text="item.title"></div>
+                      <div class="subtitle" v-text="item.subTitle"></div>
                       <div class="des-intro-inner">
                         <div class="intro" v-html="item.intro"></div>
                         <van-image
@@ -147,12 +148,31 @@
                         </announcement>
                         <span class="sendtime">{{ item.sendTime }} </span>
                       </div>
-                      <div
-                        @click="showPostDetail(item)"
-                        class="post-item-fooetr-right"
-                      >
-                        <van-button class="go-to-post-detail">详情</van-button>
+                      <div class="post-item-fooetr-right">
+                        <van-button class="like-btn">
+                          <a-icon type="like" />
+                        </van-button>
+                        <!-- 点击进入详情页 -->
+                        <!-- <van-button
+                            @click="showPostDetail(item)"
+                            class="go-to-post-detail"
+                            >详情</van-button
+                          > -->
+                        <router-link
+                          :to="{
+                            name: 'PostDetail',
+                            params: { postsId: item.postsId },
+                          }"
+                        >
+                          <van-button class="go-to-post-detail"
+                            >详情</van-button
+                          >
+                        </router-link>
                       </div>
+                    </div>
+                    <!-- 帖子赞数 -->
+                    <div class="like-num">
+                      <span> {{ item.zan }} 人觉得很赞 </span>
                     </div>
                   </div>
                 </div>
@@ -170,11 +190,13 @@
         <!-- 触底加载版 end -->
       </van-pull-refresh>
       <!-- 下拉刷新 end -->
-      <van-popup class="post-popup" position="right" v-model="postDetailShow">
+
+      <!-- 弹出层版查看帖子详情 -->
+      <!-- <van-popup class="post-popup" position="right" v-model="postDetailShow">
         <post-detail
           :postItemAndCategoryList="passDataToPostDetail()"
         ></post-detail>
-      </van-popup>
+      </van-popup> -->
     </div>
   </div>
 </template>
@@ -184,7 +206,7 @@ import { mapState } from "vuex";
 import { getPostList, getTopicsList } from "../api/api";
 // getPostList(categoryId = 2, pageNum = 1, pageSize = 20)
 import Announcement from "./Announcement";
-import PostDetail from "./PostDetail";
+// import PostDetail from "./PostDetail";
 import { ImagePreview } from "vant";
 
 export default {
@@ -232,6 +254,7 @@ export default {
       // 获取页数
       getPostList({
         categoryId: this.categoryId,
+        title: this.searchTitle,
         pageNum: this.pageNum,
         pageSize: this.pageSize,
       }).then((res) => {
@@ -278,6 +301,7 @@ export default {
         this.loadingMore = true;
         getPostList({
           categoryId: this.categoryId,
+          title: this.searchTitle,
           pageNum: this.pageNum,
           pageSize: this.pageSize,
         }).then((res) => {
@@ -299,19 +323,19 @@ export default {
       }
     },
     // 显示帖子详情 (item 为当前帖子)
-    showPostDetail(item) {
-      // 显示详情页
-      this.$store.commit("setPostDetailShow", true);
-      this.passDataToPostDetail();
-      this.postItem = item;
-    },
+    // showPostDetail(item) {
+    //   // 显示详情页
+    //   this.$store.commit("setPostDetailShow", true);
+    //   this.passDataToPostDetail();
+    //   this.postItem = item;
+    // },
     // 页面传值 ( post-list -> postDetail )
-    passDataToPostDetail() {
-      return {
-        postItem: this.postItem,
-        postCategoryList: this.postCategoryList,
-      };
-    },
+    // passDataToPostDetail() {
+    //   return {
+    //     postItem: this.postItem,
+    //     postCategoryList: this.postCategoryList,
+    //   };
+    // },
     // 预览图片
     previewImg(item) {
       // 从当前图片开始显示
@@ -329,7 +353,7 @@ export default {
   },
   components: {
     Announcement,
-    PostDetail,
+    // PostDetail,
   },
   created() {
     // 获取帖子列表
@@ -340,6 +364,7 @@ export default {
     this.loading = false;
   },
   mounted() {
+    // 骨架屏
     this.skeletonLoading = false;
   },
   computed: {
@@ -348,7 +373,9 @@ export default {
       categoryId: "categoryId",
       color: "color",
       pageSize: "pageSize",
+      title: "title",
       total: "total",
+      searchTitle: "searchTitle",
       previewImgList: "previewImgList",
     }),
     pageNum: {
@@ -534,8 +561,15 @@ export default {
               }
             }
             .post-item-fooetr-right {
-              margin-right: 10px;
-              button {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              .like-btn {
+                min-width: 24px;
+                height: 24px;
+              }
+              .go-to-post-detail {
+                margin-left: 4px;
                 width: 40px;
                 height: 24px;
                 border-radius: 4px;
@@ -544,6 +578,10 @@ export default {
                 background-color: transparent;
               }
             }
+          }
+          .like-num {
+            padding-left: 10px;
+            text-align: left;
           }
         }
       }

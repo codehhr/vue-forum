@@ -30,8 +30,13 @@ export default new Vuex.Store({
     previewImgList: [],
     // 搜索的标题
     searchTitle: "",
+    // 图片尺寸
+    imgSize: "80%",
   },
   mutations: {
+    setImgSize(state, payload) {
+      state.imgSize = payload;
+    },
     setSearchTitle(state, payload) {
       state.searchTitle = payload;
     },

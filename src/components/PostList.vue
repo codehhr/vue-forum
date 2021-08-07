@@ -2,6 +2,11 @@
   <div class="postlist">
     <!-- post-list -->
     <div class="post-list">
+      <!-- 设置图片尺寸 -->
+      <div class="set-img-size">
+        <a-button @click="plusImgSize" icon="plus"></a-button>
+        <a-button @click="minusImgSize" icon="minus"></a-button>
+      </div>
       <!-- 下拉刷新 start -->
       <van-pull-refresh
         class="pull-refresh"
@@ -127,6 +132,7 @@
                           class="cover"
                           :src="item.coverImgUrl"
                           :alt="item.title"
+                          :width="imgSize ? imgSize : '80%'"
                           @click="previewImg(item)"
                         />
                       </div>
@@ -153,7 +159,10 @@
                           class="like-btn"
                           @click="like(item.postsId)"
                         >
-                          <a-icon type="like" />
+                          <a-icon
+                            :theme="item.zan > 0 ? 'filled' : 'outlined'"
+                            type="like"
+                          />
                         </van-button>
                         <!-- 点击进入详情页 -->
                         <!-- <van-button
@@ -252,6 +261,20 @@ export default {
     };
   },
   methods: {
+    // +
+    plusImgSize() {
+      if (this.imgSize.split("%")[0] > 0 && this.imgSize.split("%")[0] < 100) {
+        let tempSize = Number(this.imgSize.split("%")[0]) + 2;
+        this.$store.commit("setImgSize", `${tempSize}%`);
+      }
+    },
+    // -
+    minusImgSize() {
+      if (this.imgSize.split("%")[0] > 0 && this.imgSize.split("%")[0] < 100) {
+        let tempSize = Number(this.imgSize.split("%")[0]) - 2;
+        this.$store.commit("setImgSize", `${tempSize}%`);
+      }
+    },
     // 获取帖子列表
     initPostsList() {
       // 获取页数
@@ -383,6 +406,7 @@ export default {
       total: "total",
       searchTitle: "searchTitle",
       previewImgList: "previewImgList",
+      imgSize: "imgSize",
     }),
     pageNum: {
       get() {
@@ -408,8 +432,20 @@ export default {
 @post-list-title-font-size: 1rem;
 
 .post-list {
+  position: relative;
   height: calc(100vh - 46px);
   overflow: hidden;
+  .set-img-size {
+    position: absolute;
+    bottom: 4%;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 999;
+    button:nth-of-type(1) {
+      border-bottom: none;
+    }
+  }
   .post-popup {
     width: 100%;
   }
@@ -490,6 +526,10 @@ export default {
             text-align: left;
             font-size: @font-size;
           }
+          .subtitle {
+            padding-left: 40px;
+            text-align: left;
+          }
           .des-intro-inner {
             padding: 0 10px;
             width: 100%;
@@ -503,9 +543,9 @@ export default {
               // height: 0;
               overflow: hidden;
               text-align: center;
+              transition: all 0.4s;
               img {
                 border-radius: 6px;
-                width: 90%;
                 transition: all 0.4s;
               }
             }

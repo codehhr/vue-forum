@@ -1,9 +1,5 @@
 <template>
-  <div class="go-home">
-    <router-link :to="{ name: 'index' }">
-      <van-button class="go-home-btn" icon="wap-home-o" />
-    </router-link>
-  </div>
+  <div class="go-home"></div>
 </template>
 
 <script>

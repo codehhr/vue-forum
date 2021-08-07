@@ -1,7 +1,7 @@
 <template>
   <div class="go-back">
     <van-button @click="goBack" class="go-back-btn" icon="arrow-left" />
-    <!-- <slot name="publish"></slot> -->
+    <van-button @click="goHome" class="go-home-btn" icon="wap-home-o" />
   </div>
 </template>
 
@@ -11,6 +11,9 @@ export default {
   methods: {
     goBack() {
       this.$router.back(-1);
+    },
+    goHome() {
+      this.$router.push({ name: "index" });
     },
   },
 };

@@ -6,6 +6,7 @@ module.exports = {
       "/forum": {
         target: "https://showme2.myhope365.com",
         changeOrigin: true,
+        secure: false,
         pathRewrite: {
           "^/forum": "",
         },

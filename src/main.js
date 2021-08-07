@@ -39,6 +39,12 @@ Vue.use(Field);
 // Skeleton
 import { Skeleton } from "vant";
 Vue.use(Skeleton);
+// 滑动(删除)
+import { SwipeCell } from "vant";
+Vue.use(SwipeCell);
+// loading
+import { Loading } from "vant";
+Vue.use(Loading);
 
 Vue.config.productionTip = false;
 

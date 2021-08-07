@@ -11,23 +11,38 @@ import PostDetail from "../components/PostDetail";
 import Post from "../components/Post";
 import EditPost from "../components/EditPost";
 import ModifyInfo from "../components/ModifyInfo";
+import Animation from "../views/Animation";
 import { getUserInfo } from "../api/api";
 import Site from "../components/Site";
 
 Vue.use(VueRouter);
 
 const routes = [
-  // 首页
+  {
+    path: "/",
+    name: "Animation",
+    component: Animation,
+    meta: {
+      title: "亿个人的论坛",
+    },
+  },
+  // 主页
   {
     path: "/index",
     name: "index",
     component: Index,
+    meta: {
+      title: "亿个人的论坛",
+    },
   },
   // 登录
   {
     path: "/login",
     name: "login",
     component: Login,
+    meta: {
+      title: "登录|亿个人的论坛",
+    },
   },
   // 注册
   {

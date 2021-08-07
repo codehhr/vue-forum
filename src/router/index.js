@@ -10,6 +10,7 @@ import AboutMe from "../components/AboutMe";
 import PostDetail from "../components/PostDetail";
 import Post from "../components/Post";
 import EditPost from "../components/EditPost";
+import ModifyInfo from "../components/ModifyInfo";
 import { getUserInfo } from "../api/api";
 import Site from "../components/Site";
 
@@ -39,6 +40,15 @@ const routes = [
     path: "/user",
     name: "user",
     component: UserCenter,
+    meta: {
+      requireLogin: true,
+    },
+  },
+  // 修改个人信息
+  {
+    path: "/modifyinfo",
+    name: "modifyinfo",
+    component: ModifyInfo,
     meta: {
       requireLogin: true,
     },

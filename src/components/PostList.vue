@@ -149,7 +149,10 @@
                         <span class="sendtime">{{ item.sendTime }} </span>
                       </div>
                       <div class="post-item-fooetr-right">
-                        <van-button class="like-btn">
+                        <van-button
+                          class="like-btn"
+                          @click="like(item.postsId)"
+                        >
                           <a-icon type="like" />
                         </van-button>
                         <!-- 点击进入详情页 -->
@@ -349,6 +352,9 @@ export default {
         images: this.previewImgList,
         startPosition: index,
       });
+    },
+    like(postsId) {
+      console.log(postsId);
     },
   },
   components: {
@@ -569,6 +575,8 @@ export default {
                 height: 24px;
               }
               .go-to-post-detail {
+                position: relative;
+                top: -2px;
                 margin-left: 4px;
                 width: 40px;
                 height: 24px;

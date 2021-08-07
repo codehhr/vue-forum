@@ -218,23 +218,29 @@ export default {
     },
     // 提交评论 (非回复)
     handleSubmit() {
-      if (!this.userCommentValue) {
-        return;
+      if (this.alreadyLogin) {
+        if (!this.userCommentValue) {
+          this.$message.warning(" 啥也没写 ~");
+        } else {
+          this.submitting = true;
+          setTimeout(() => {
+            this.submitting = false;
+            postComment({
+              postsId: this.postItem.postsId,
+              commentContent: this.userCommentValue,
+            }).then((res) => {
+              if (res.code === 0) {
+                this.$message.success("提交成功");
+                this.renderCommentsList(this.postItem.postsId);
+              }
+            });
+            this.userCommentValue = "";
+          }, 500);
+        }
       } else {
-        this.submitting = true;
-        setTimeout(() => {
-          this.submitting = false;
-          postComment({
-            postsId: this.postItem.postsId,
-            commentContent: this.userCommentValue,
-          }).then((res) => {
-            if (res.code === 0) {
-              this.$message.success("提交成功");
-              this.renderCommentsList(this.postItem.postsId);
-            }
-          });
-          this.userCommentValue = "";
-        }, 500);
+        console.log(0);
+        this.$message.warning(" 请先登录 ~");
+        this.$router.push({ name: "login" });
       }
     },
 
@@ -258,6 +264,7 @@ export default {
     ...mapState({
       color: "color",
       userInfo: "userInfo",
+      alreadyLogin: "alreadyLogin",
     }),
   },
   created() {

@@ -23,7 +23,7 @@ const routes = [
     name: "Animation",
     component: Animation,
     meta: {
-      title: "亿个人的论坛",
+      title: "风云论坛",
     },
   },
   // 主页
@@ -32,7 +32,7 @@ const routes = [
     name: "index",
     component: Index,
     meta: {
-      title: "亿个人的论坛",
+      title: "风云论坛",
       keepAlive: true,
     },
   },
@@ -42,7 +42,7 @@ const routes = [
     name: "login",
     component: Login,
     meta: {
-      title: "登录|亿个人的论坛",
+      title: "登录|风云论坛",
     },
   },
   // 注册
@@ -50,6 +50,9 @@ const routes = [
     path: "/register",
     name: "register",
     component: Register,
+    meta: {
+      title: "注册|风云论坛",
+    },
   },
   // 个人中心
   {
@@ -58,6 +61,7 @@ const routes = [
     component: UserCenter,
     meta: {
       requireLogin: true,
+      title: "个人中心|风云论坛",
     },
   },
   // 修改个人信息

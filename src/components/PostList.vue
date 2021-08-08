@@ -17,7 +17,7 @@
         <!-- 公告 -->
         <announcement>
           <template v-slot:title>
-            <h2 class="post-announcement">亿个人论坛</h2>
+            <h2 class="post-announcement">风云论坛</h2>
           </template>
         </announcement>
         <!-- 下拉提示 , 通过 scale 实现一个缩放效果 -->

@@ -32,8 +32,13 @@ export default new Vuex.Store({
     searchTitle: "",
     // 图片尺寸
     imgSize: "80%",
+    //
+    postDetailShow: false,
   },
   mutations: {
+    setPostDetailShow(state, payload) {
+      state.postDetailShow = payload;
+    },
     setImgSize(state, payload) {
       state.imgSize = payload;
     },

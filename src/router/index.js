@@ -33,6 +33,7 @@ const routes = [
     component: Index,
     meta: {
       title: "亿个人的论坛",
+      keepAlive: true,
     },
   },
   // 登录

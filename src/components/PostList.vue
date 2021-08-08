@@ -165,12 +165,12 @@
                           />
                         </van-button>
                         <!-- 点击进入详情页 -->
-                        <!-- <van-button
-                            @click="showPostDetail(item)"
-                            class="go-to-post-detail"
-                            >详情</van-button
-                          > -->
-                        <router-link
+                        <van-button
+                          @click="showPostDetail(item)"
+                          class="go-to-post-detail"
+                          >详情</van-button
+                        >
+                        <!-- <router-link
                           :to="{
                             name: 'PostDetail',
                             params: { postsId: item.postsId },
@@ -179,7 +179,7 @@
                           <van-button class="go-to-post-detail"
                             >详情</van-button
                           >
-                        </router-link>
+                        </router-link> -->
                       </div>
                     </div>
                     <!-- 帖子赞数 -->
@@ -204,11 +204,11 @@
       <!-- 下拉刷新 end -->
 
       <!-- 弹出层版查看帖子详情 -->
-      <!-- <van-popup class="post-popup" position="right" v-model="postDetailShow">
+      <van-popup class="post-popup" position="right" v-model="postDetailShow">
         <post-detail
           :postItemAndCategoryList="passDataToPostDetail()"
         ></post-detail>
-      </van-popup> -->
+      </van-popup>
     </div>
   </div>
 </template>
@@ -218,7 +218,7 @@ import { mapState } from "vuex";
 import { getPostList, getTopicsList } from "../api/api";
 // getPostList(categoryId = 2, pageNum = 1, pageSize = 20)
 import Announcement from "./Announcement";
-// import PostDetail from "./PostDetail";
+import PostDetail from "./PostDetail";
 import { ImagePreview } from "vant";
 
 export default {
@@ -349,19 +349,19 @@ export default {
       }
     },
     // 显示帖子详情 (item 为当前帖子)
-    // showPostDetail(item) {
-    //   // 显示详情页
-    //   this.$store.commit("setPostDetailShow", true);
-    //   this.passDataToPostDetail();
-    //   this.postItem = item;
-    // },
+    showPostDetail(item) {
+      // 显示详情页
+      this.postDetailShow = true;
+      this.postItem = item;
+      this.passDataToPostDetail();
+    },
     // 页面传值 ( post-list -> postDetail )
-    // passDataToPostDetail() {
-    //   return {
-    //     postItem: this.postItem,
-    //     postCategoryList: this.postCategoryList,
-    //   };
-    // },
+    passDataToPostDetail() {
+      return {
+        postItem: this.postItem,
+        postCategoryList: this.postCategoryList,
+      };
+    },
     // 预览图片
     previewImg(item) {
       // 从当前图片开始显示
@@ -382,7 +382,7 @@ export default {
   },
   components: {
     Announcement,
-    // PostDetail,
+    PostDetail,
   },
   created() {
     // 获取帖子列表

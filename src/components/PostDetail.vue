@@ -1,6 +1,8 @@
 <template>
   <div class="postdetail">
-    <go-back></go-back>
+    <div class="close-post-detail">
+      <van-button @click="goBack" class="go-back-btn" icon="arrow-left" />
+    </div>
     <div class="post-detail-outer">
       <div class="post-detail">
         <div class="post-detail-header">
@@ -146,13 +148,7 @@
 <script>
 import { mapState } from "vuex";
 import Announcement from "./Announcement";
-import {
-  getTopicsList,
-  getPostDetail,
-  getCommentsList,
-  postComment,
-} from "../api/api";
-import GoBack from "./GoBack";
+import { getCommentsList, postComment } from "../api/api";
 import moment from "moment";
 
 export default {
@@ -171,38 +167,43 @@ export default {
       // 点赞动作
       action: null,
       moment,
-      // 每一项
+      // 当前帖子
       postItem: {},
       // 分类数组
       postCategoryList: [],
     };
   },
-  // props: {
-  //   // 从 postList 传过来的 item 和 分类的数组
-  //    {
-  //     type: Object,
-  //   },
-  // },
+  props: {
+    // 从 postList 传过来的 item 和 分类的数组
+    postItemAndCategoryList: {
+      type: Object,
+    },
+  },
   methods: {
+    goBack() {
+      this.postDetailShow = false;
+    },
     // 点赞
     like(commentId) {
       this[`action${commentId}`] = `liked`;
       this.$refs[`like${commentId}`].innerHTML = 1;
     },
-    // 渲染数据
-    getTopicsListBeforeRrender() {
-      getTopicsList().then((res) => {
-        if (res.code === 0) {
-          this.postCategoryList = res.rows;
-          this.renderPostDetailCategoryName();
-        } else {
-          this.$message.warning(res.msg);
-        }
-      });
-    },
+    // // 渲染数据
+    // getTopicsListBeforeRrender() {
+    //   getTopicsList().then((res) => {
+    //     if (res.code === 0) {
+    //       this.postCategoryList = res.rows;
+    //       this.renderPostDetailCategoryName();
+    //     } else {
+    //       this.$message.warning(res.msg);
+    //     }
+    //   });
+    // },
     // 渲染详情页标签名
     renderPostDetailCategoryName() {
-      this.getPostItem(this.$route.params.postsId);
+      // 拿到父组件传来的数据
+      this.postItem = this.postItemAndCategoryList.postItem;
+      this.postCategoryList = this.postItemAndCategoryList.postCategoryList;
       // 分类标签名
       let tagName = "";
       this.postCategoryList.forEach((item) => {
@@ -210,6 +211,8 @@ export default {
           tagName = item.name;
         }
       });
+      // 渲染评论
+      this.renderCommentsList(this.postItem.postsId);
       return tagName;
     },
     // 同步 data 于输入框里的值
@@ -250,15 +253,6 @@ export default {
         this.commentsList = res.rows;
       });
     },
-    getPostItem(postsId) {
-      getPostDetail(postsId).then((res) => {
-        if (res.code === 0) {
-          this.postItem = res.data;
-          // 渲染评论
-          this.renderCommentsList(this.postItem.postsId);
-        }
-      });
-    },
   },
   computed: {
     ...mapState({
@@ -266,16 +260,20 @@ export default {
       userInfo: "userInfo",
       alreadyLogin: "alreadyLogin",
     }),
-  },
-  created() {
-    this.getTopicsListBeforeRrender();
+    postDetailShow: {
+      get() {
+        return this.$store.state.postDetailShow;
+      },
+      set(payload) {
+        this.$store.commit("setPostDetailShow", payload);
+      },
+    },
   },
   mounted() {
     this.loading = false;
   },
   components: {
     Announcement,
-    GoBack,
   },
 };
 </script>
@@ -289,6 +287,19 @@ export default {
 @post-detail-content-footer-font-size: 0.6rem;
 @post-detail-content-footer-color: #aaaaaa;
 
+.close-post-detail {
+  padding: 0 20px 0 10px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 46px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  .go-back-btn {
+    padding: 0;
+    width: 40px;
+  }
+}
 .ant-tag.ant-tag-has-color {
   margin: 0;
   padding: 0;

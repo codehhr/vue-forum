@@ -14,7 +14,7 @@ export default {
     return {
       url:
         // "https://www.51qianduan.com/uploadfile/article/1905/12/8418/index.html",
-        "https://codehhr.github.io/web/coderain/",
+        "https://codehhr-web.netlify.app/coderain/",
     };
   },
 };

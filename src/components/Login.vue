@@ -1,6 +1,6 @@
 <template>
   <div class="login">
-    <go-home></go-home>
+    <go-back></go-back>
     <a-form
       id="components-form-demo-normal-login"
       :form="form"
@@ -71,7 +71,7 @@
 
 <script>
 import { login } from "../api/api";
-import GoHome from "../components/GoHome";
+import GoBack from "./GoBack";
 
 export default {
   name: "Login",
@@ -105,7 +105,7 @@ export default {
     },
   },
   components: {
-    GoHome,
+    GoBack,
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "normal_login" });

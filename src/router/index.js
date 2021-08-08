@@ -135,12 +135,13 @@ router.beforeEach((to, from, next) => {
       if (res.code === 0) {
         next();
       } else {
-        next("/index");
+        next("/login");
       }
     });
   } else {
     next();
   }
+  document.title = to.meta.title;
 });
 
 export default router;

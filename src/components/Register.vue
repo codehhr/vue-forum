@@ -1,6 +1,6 @@
 <template>
   <div class="register">
-    <go-home></go-home>
+    <go-back></go-back>
     <a-form class="register-form" :form="form" @submit="handleRegisterSubmit">
       <a-form-item v-bind="formItemLayout">
         <a-input
@@ -165,7 +165,7 @@
 
 <script>
 import { register, getCode } from "../api/api";
-import GoHome from "../components/GoHome";
+import GoBack from "./GoBack";
 
 export default {
   name: "Register",
@@ -296,7 +296,7 @@ export default {
     // 注册 end
   },
   components: {
-    GoHome,
+    GoBack,
   },
   beforeCreate() {
     this.form = this.$form.createForm(this, { name: "register" });

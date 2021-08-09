@@ -96,7 +96,8 @@
             <!-- 评论列表 start -->
             <a-list
               class="comment-list"
-              :header="`共 ${commentsList.length} 条回复`"
+              v-show="commentsList"
+              :header="`共 ${commentsList ? commentsList.length : ''} 条回复`"
               item-layout="horizontal"
               :data-source="commentsList"
             >

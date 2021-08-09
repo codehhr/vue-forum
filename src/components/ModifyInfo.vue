@@ -69,7 +69,6 @@ export default {
       e.preventDefault();
       this.form.validateFieldsAndScroll((err, values) => {
         if (!err) {
-          console.log(values);
           modifyUserInfo({
             userName: values.userName,
             email: values.email,

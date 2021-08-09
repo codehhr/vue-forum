@@ -1,5 +1,11 @@
 <template>
   <div class="postlist">
+    <!-- 遮罩层 -->
+    <!-- <div v-show="loading" class="mask">
+      <van-loading vertical size="80" color="#ffffff" class="loading">
+        加载中...
+      </van-loading>
+    </div> -->
     <!-- post-list -->
     <div class="post-list">
       <!-- 设置图片尺寸 -->
@@ -78,8 +84,9 @@
         <!-- 触底加载版 start -->
         <a-list
           class="post-loadmore-list"
-          :loading="loading"
           item-layout="horizontal"
+          :loading="loading"
+          :split="true"
           :data-source="postList"
         >
           <div
@@ -96,10 +103,12 @@
             <a-spin v-if="loadingMore" />
             <a-button v-else @click="onLoadMore">加载更多</a-button>
           </div>
+          <!-- 点击进入详情页 -->
           <a-list-item
             class="post-list-item"
             slot="renderItem"
             slot-scope="item"
+            @click="showPostDetail(item)"
           >
             <!-- skeleton start -->
             <van-skeleton
@@ -115,7 +124,7 @@
                   class="post-item-avatar"
                   slot="avatar"
                   :src="
-                    item
+                    item.avatar
                       ? item.avatar
                       : 'https://b.yzcdn.cn/vant/icon-demo-1126.png'
                   "
@@ -133,7 +142,7 @@
                           :src="item.coverImgUrl"
                           :alt="item.title"
                           :width="imgSize ? imgSize : '80%'"
-                          @click="previewImg(item)"
+                          @click.stop="previewImg(item)"
                         />
                       </div>
                     </div>
@@ -155,21 +164,6 @@
                         <span class="sendtime">{{ item.sendTime }} </span>
                       </div>
                       <div class="post-item-fooetr-right">
-                        <van-button
-                          class="like-btn"
-                          @click="like(item.postsId)"
-                        >
-                          <a-icon
-                            :theme="item.zan > 0 ? 'filled' : 'outlined'"
-                            type="like"
-                          />
-                        </van-button>
-                        <!-- 点击进入详情页 -->
-                        <van-button
-                          @click="showPostDetail(item)"
-                          class="go-to-post-detail"
-                          >详情</van-button
-                        >
                         <!-- <router-link
                           :to="{
                             name: 'PostDetail',
@@ -244,6 +238,7 @@ export default {
       /*
         触底加载版
       */
+      showMask: false,
       // 默认不触发加载更多
       loading: true,
       // 加载更多
@@ -261,7 +256,7 @@ export default {
     };
   },
   methods: {
-    // +
+    // img size +
     plusImgSize() {
       if (this.imgSize.split("%")[0] > 100) {
         this.$store.commit("setImgSize", `100%`);
@@ -270,7 +265,7 @@ export default {
         this.$store.commit("setImgSize", `${tempSize}%`);
       }
     },
-    // -
+    // img size -
     minusImgSize() {
       if (this.imgSize.split("%")[0] < 10) {
         this.$store.commit("setImgSize", `0%`);
@@ -281,6 +276,7 @@ export default {
     },
     // 获取帖子列表
     initPostsList() {
+      this.loading = true;
       // 获取页数
       getPostList({
         categoryId: this.categoryId,
@@ -290,6 +286,7 @@ export default {
       }).then((res) => {
         if (res.code === 0) {
           this.$store.dispatch("setReversePostList", res);
+          this.loading = false;
         } else {
           this.$message.warning(res.msg);
         }
@@ -318,15 +315,17 @@ export default {
       this.isLoading = true;
       this.initPostsList();
       setTimeout(() => {
-        this.$message.success(" 刷新成功 ~");
         this.isLoading = false;
+        this.$message.success(" 刷新成功 ~");
       }, 500);
     },
     // 触底加载更多
     onLoadMore() {
+      this.loading = true;
       this.pageNum--;
       if (this.pageNum <= 0) {
         this.$message.warning("没有更多了 ~");
+        this.loading = false;
       } else {
         this.loadingMore = true;
         getPostList({
@@ -344,6 +343,7 @@ export default {
               window.dispatchEvent(new Event("resize"));
             });
             this.$store.commit("setPreviewImgList", res.rows);
+            this.loading = false;
             // 结束加载动画
             this.loadingMore = false;
           } else {
@@ -379,9 +379,6 @@ export default {
         images: this.previewImgList,
         startPosition: index,
       });
-    },
-    like(postsId) {
-      console.log(postsId);
     },
   },
   components: {
@@ -435,6 +432,22 @@ export default {
 <style scoped lang="less">
 @post-list-title-font-size: 1rem;
 
+.postlist {
+  position: relative;
+  height: 100%;
+  .mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(52, 64, 71, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99;
+  }
+}
 .post-list {
   position: relative;
   height: calc(100vh - 46px);
@@ -445,7 +458,7 @@ export default {
     right: 0;
     display: flex;
     flex-direction: column;
-    z-index: 999;
+    z-index: 9;
     button:nth-of-type(1) {
       border-bottom: none;
     }
@@ -489,15 +502,14 @@ export default {
   border-radius: 4px;
 }
 
-.ant-list-split .ant-list-item {
-  border: none !important;
-}
-
 .ant-list {
   // 每一项
   .ant-list-item {
-    padding: 10px 10px 0;
+    padding: 20px 10px;
     width: 100%;
+    &:nth-last-of-type(1) {
+      border-bottom: none !important;
+    }
     .post-item-content {
       width: 100%;
       display: flex;
@@ -555,7 +567,7 @@ export default {
             }
             // introduction
             .intro {
-              padding: 5px 40px 15px 0;
+              padding: 0;
               width: 100%;
               text-align: center;
               color: @intro-color;
@@ -614,10 +626,6 @@ export default {
               display: flex;
               align-items: center;
               justify-content: space-between;
-              .like-btn {
-                min-width: 24px;
-                height: 24px;
-              }
               .go-to-post-detail {
                 position: relative;
                 top: -2px;
@@ -657,7 +665,12 @@ export default {
     }
   }
   .loadmore {
-    padding-bottom: 60px;
+    padding-bottom: 100px;
+    button {
+      border: none;
+      background-color: #e8ecf3;
+      color: #667c99;
+    }
   }
 }
 </style>

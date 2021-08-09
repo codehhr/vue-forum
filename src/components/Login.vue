@@ -12,13 +12,11 @@
           v-decorator="[
             'username',
             {
-              rules: [
-                { required: true, message: 'Please input your username!' },
-              ],
+              rules: [{ required: true, message: '请输入您的用户名!' }],
             },
           ]"
           autocomplete
-          placeholder="Username"
+          placeholder="用户名"
         >
           <a-icon slot="prefix" type="user" style="color: rgba(0,0,0,.25)" />
         </a-input>
@@ -28,14 +26,12 @@
           v-decorator="[
             'password',
             {
-              rules: [
-                { required: true, message: 'Please input your Password!' },
-              ],
+              rules: [{ required: true, message: '请输入您的密码!' }],
             },
           ]"
           type="password"
           autocomplete
-          placeholder="Password"
+          placeholder="密码"
         >
           <a-icon slot="prefix" type="lock" style="color: rgba(0,0,0,.25)" />
         </a-input>

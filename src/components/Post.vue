@@ -127,13 +127,17 @@ export default {
     },
     // 提交
     submitPost(values) {
-      this.showMask = true;
-      // 上传图片
-      this.uploadImgBeforePublish({
-        file: values.coverImgUrl[0].file,
-        fileUseForEnum: "BBS",
-        values,
-      });
+      if (values.coverImgUrl.length == 0) {
+        this.$message.warning("请上传封面 ~");
+      } else {
+        this.showMask = true;
+        // 上传图片
+        this.uploadImgBeforePublish({
+          file: values.coverImgUrl[0].file,
+          fileUseForEnum: "BBS",
+          values,
+        });
+      }
     },
     // 发表
     post(values) {
@@ -158,8 +162,8 @@ export default {
         });
     },
     //  提交失败
-    onFailed(err) {
-      this.$message.warning(err);
+    onFailed() {
+      this.$message.warning("你不对劲 ~");
     },
   },
   components: {
@@ -202,7 +206,7 @@ export default {
   }
 }
 </style>
-<style>
+<style lang="less">
 .wrapper {
   display: flex;
   align-items: center;

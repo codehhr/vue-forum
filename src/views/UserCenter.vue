@@ -9,16 +9,12 @@
         src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
       />
       <template slot="actions" class="ant-card-actions">
-        <a-upload
-          name="avatarfile"
-          class="upload-avatar"
-          action="/forum/api/system/user/profile/update/avatar/nos"
-          @change="handleChange"
-          :showUploadList="false"
-        >
-          <a-icon key="setting" type="setting" class="setting" />
-        </a-upload>
-        <a-icon key="edit" type="edit" @click="showModifyUserInfo" />
+        <a-icon
+          key="setting"
+          @click="showModifyUserInfo"
+          type="setting"
+          class="setting"
+        />
         <a-icon key="ellipsis" type="ellipsis" @click="extra" />
       </template>
       <a-card-meta
@@ -30,10 +26,21 @@
           :src="
             userInfo
               ? userInfo.avatar
+                ? userInfo.avatar
+                : 'https://b.yzcdn.cn/vant/icon-demo-1126.png'
               : 'https://b.yzcdn.cn/vant/icon-demo-1126.png'
           "
         />
       </a-card-meta>
+      <a-upload
+        name="avatarfile"
+        class="upload-avatar"
+        action="/forum/api/system/user/profile/update/avatar/nos"
+        @change="handleChange"
+        :showUploadList="false"
+      >
+        <a-icon key="edit" type="edit" />
+      </a-upload>
     </a-card>
     <!-- card end -->
 
@@ -132,5 +139,18 @@ export default {
 .ant-card-actions > li {
   margin: 0 !important;
   padding: 10px 0;
+}
+.ant-card-meta-description {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.ant-card-body {
+  position: relative;
+  .upload-avatar {
+    position: absolute;
+    top: 34px;
+    left: 58px;
+  }
 }
 </style>

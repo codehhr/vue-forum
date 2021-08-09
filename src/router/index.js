@@ -12,6 +12,7 @@ import Post from "../components/Post";
 import EditPost from "../components/EditPost";
 import ModifyInfo from "../components/ModifyInfo";
 import Animation from "../views/Animation";
+import Extra from "../components/Extra";
 import { getUserInfo } from "../api/api";
 import Site from "../components/Site";
 
@@ -71,6 +72,7 @@ const routes = [
     component: ModifyInfo,
     meta: {
       requireLogin: true,
+      title: "个人中心|风云论坛",
     },
   },
   // 发表新帖
@@ -80,6 +82,7 @@ const routes = [
     component: Post,
     meta: {
       requireLogin: true,
+      title: "发表新帖|风云论坛",
     },
   },
   // 编辑帖子
@@ -89,6 +92,7 @@ const routes = [
     component: EditPost,
     meta: {
       requireLogin: true,
+      title: "编辑|风云论坛",
     },
   },
   // 帖子详情
@@ -102,12 +106,19 @@ const routes = [
     path: "/agreement",
     name: "agreement",
     component: Agreement,
+    meta: {
+      title: "协议|风云论坛",
+    },
   },
   // 忘记密码
   {
     path: "/forget-password",
     name: "forgetPassword",
     component: ForgetPassword,
+    meta: {
+      requireLogin: true,
+      title: "文件密码|风云论坛",
+    },
   },
   // 我参与的
   {
@@ -116,6 +127,16 @@ const routes = [
     component: AboutMe,
     meta: {
       requireLogin: true,
+      title: "我参与的|风云论坛",
+    },
+  },
+  // 其他
+  {
+    path: "/extra",
+    name: "extra",
+    component: Extra,
+    meta: {
+      title: "其他|风云论坛",
     },
   },
   // 关于本站
@@ -123,6 +144,9 @@ const routes = [
     path: "/site",
     name: "site",
     component: Site,
+    meta: {
+      title: "关于本站|风云论坛",
+    },
   },
 ];
 

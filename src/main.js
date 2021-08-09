@@ -45,6 +45,9 @@ Vue.use(SwipeCell);
 // loading
 import { Loading } from "vant";
 Vue.use(Loading);
+// VueVirtualScroller
+import VueVirtualScroller from "vue-virtual-scroller";
+Vue.use(VueVirtualScroller);
 
 Vue.config.productionTip = false;
 

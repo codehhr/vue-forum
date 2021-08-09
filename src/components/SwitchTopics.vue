@@ -2,7 +2,10 @@
   <div class="switch-topics">
     <!-- 分类按钮 -->
     <van-cell class="switch-topics-btn" @click="showSwitchTopicsPopup">
-      <span>全部分类</span>
+      <a-button class="category-name"
+        >{{ getTopicName() }}
+        <a-icon type="caret-down" />
+      </a-button>
     </van-cell>
     <!-- 弹出框 -->
 
@@ -58,6 +61,16 @@ export default {
     };
   },
   methods: {
+    // 获取分类名
+    getTopicName() {
+      let categoryName = "全部分类";
+      this.categoryList.forEach((item) => {
+        if (item.categoryId == this.categoryId) {
+          categoryName = item.name;
+        }
+      });
+      return categoryName;
+    },
     handleClick() {
       this.loading = !this.loading;
     },
@@ -131,9 +144,10 @@ export default {
 .switch-topics {
   .switch-topics-btn {
     padding: 0;
-    span {
+    .category-name {
       font-size: 1.1rem;
       color: @main-color;
+      border: none;
     }
   }
   .switch-topics-popup {

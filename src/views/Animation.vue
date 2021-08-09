@@ -12,7 +12,7 @@ export default {
     return {
       url:
         // "https://www.51qianduan.com/uploadfile/article/1905/12/8418/index.html",
-        "https://codehhr-web.netlify.app/coderain/",
+        "https://codehhr.github.io/web/coderain/",
     };
   },
   methods: {
@@ -23,9 +23,14 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
+<style lang="less">
+#app {
+  height: 100vh;
+}
 .entrance-animation {
   position: relative;
+  height: 100%;
+  overflow: hidden;
   .go-to-home {
     position: absolute;
     top: 10px;
@@ -34,8 +39,12 @@ export default {
     background-color: transparent;
   }
   iframe {
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
   }
+}
+canvas {
+  // width: 100%;
+  height: 100%;
 }
 </style>

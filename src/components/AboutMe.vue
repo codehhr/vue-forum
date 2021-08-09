@@ -261,4 +261,7 @@ export default {
   margin-top: 8px;
   border-radius: 4px;
 }
+.van-dialog {
+  padding: 10px 0;
+}
 </style>

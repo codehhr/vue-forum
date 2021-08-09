@@ -16,6 +16,14 @@
         </router-link>
       </div>
 
+      <!-- 其他 -->
+      <div class="extra">
+        <router-link to="/extra">
+          <a-icon type="compass" />
+          <span>其他</span>
+        </router-link>
+      </div>
+
       <!-- 登录注册入口组件 -->
       <signin-entrance></signin-entrance>
 
@@ -86,6 +94,9 @@ export default {
         font-size: @font-size;
       }
       a {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
         border-radius: 20px;
         &:active {
           background-color: #e8ecf3;

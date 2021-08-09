@@ -205,6 +205,7 @@ export default {
       // 拿到父组件传来的数据
       this.postItem = this.postItemAndCategoryList.postItem;
       this.postCategoryList = this.postItemAndCategoryList.postCategoryList;
+      this.renderCommentsList(this.postItem.postsId);
       // 分类标签名
       let tagName = "";
       this.postCategoryList.forEach((item) => {
@@ -213,7 +214,6 @@ export default {
         }
       });
       // 渲染评论
-      this.renderCommentsList(this.postItem.postsId);
       return tagName;
     },
     // 同步 data 于输入框里的值

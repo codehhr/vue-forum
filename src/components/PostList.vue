@@ -263,14 +263,18 @@ export default {
   methods: {
     // +
     plusImgSize() {
-      if (this.imgSize.split("%")[0] > 0 && this.imgSize.split("%")[0] < 100) {
+      if (this.imgSize.split("%")[0] > 100) {
+        this.$store.commit("setImgSize", `100%`);
+      } else {
         let tempSize = Number(this.imgSize.split("%")[0]) + 2;
         this.$store.commit("setImgSize", `${tempSize}%`);
       }
     },
     // -
     minusImgSize() {
-      if (this.imgSize.split("%")[0] > 0 && this.imgSize.split("%")[0] < 100) {
+      if (this.imgSize.split("%")[0] < 10) {
+        this.$store.commit("setImgSize", `0%`);
+      } else {
         let tempSize = Number(this.imgSize.split("%")[0]) - 2;
         this.$store.commit("setImgSize", `${tempSize}%`);
       }

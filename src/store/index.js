@@ -32,10 +32,18 @@ export default new Vuex.Store({
     searchTitle: "",
     // 图片尺寸
     imgSize: "80%",
+    postItem: {},
+    postCategoryList: [],
     //
     postDetailShow: false,
   },
   mutations: {
+    setPostCategoryList(state, payload) {
+      state.postCategoryList = payload;
+    },
+    setPostItem(state, payload) {
+      state.postItem = payload;
+    },
     setPostDetailShow(state, payload) {
       state.postDetailShow = payload;
     },

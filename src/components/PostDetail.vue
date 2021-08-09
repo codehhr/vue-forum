@@ -168,10 +168,10 @@ export default {
       // 点赞动作
       action: null,
       moment,
-      // 当前帖子
-      postItem: {},
-      // 分类数组
-      postCategoryList: [],
+      // // 当前帖子
+      // postItem: {},
+      // // 分类数组
+      // postCategoryList: [],
     };
   },
   props: {
@@ -205,6 +205,7 @@ export default {
       // 拿到父组件传来的数据
       this.postItem = this.postItemAndCategoryList.postItem;
       this.postCategoryList = this.postItemAndCategoryList.postCategoryList;
+      // 渲染评论
       this.renderCommentsList(this.postItem.postsId);
       // 分类标签名
       let tagName = "";
@@ -213,7 +214,6 @@ export default {
           tagName = item.name;
         }
       });
-      // 渲染评论
       return tagName;
     },
     // 同步 data 于输入框里的值
@@ -267,6 +267,22 @@ export default {
       },
       set(payload) {
         this.$store.commit("setPostDetailShow", payload);
+      },
+    },
+    postItem: {
+      get() {
+        return this.$store.state.postItem;
+      },
+      set(payload) {
+        this.$store.commit("setPostItem", payload);
+      },
+    },
+    postCategoryList: {
+      get() {
+        return this.$store.state.postCategoryList;
+      },
+      set(payload) {
+        this.$store.commit("setPostCategoryList", payload);
       },
     },
   },

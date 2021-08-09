@@ -1,8 +1,6 @@
 <template>
   <div class="entrance-animation">
-    <router-link :to="{ name: 'index' }">
-      <a-button class="go-to-home">跳过</a-button>
-    </router-link>
+    <a-button @click="goToIndex" class="go-to-home">跳过</a-button>
     <iframe :src="url" frameborder="0"></iframe>
   </div>
 </template>
@@ -16,6 +14,11 @@ export default {
         // "https://www.51qianduan.com/uploadfile/article/1905/12/8418/index.html",
         "https://codehhr-web.netlify.app/coderain/",
     };
+  },
+  methods: {
+    goToIndex() {
+      this.$router.push({ name: "index" });
+    },
   },
 };
 </script>

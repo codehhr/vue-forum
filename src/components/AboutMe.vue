@@ -39,6 +39,7 @@
           slot="renderItem"
           key="item.postsId"
           slot-scope="item"
+          @click="showPostDetail(item)"
         >
           <van-swipe-cell>
             <div class="header">
@@ -97,19 +98,32 @@
         <!-- </router-link> -->
       </a-list>
     </van-pull-refresh>
+    <!-- 弹出层版查看帖子详情 -->
+    <van-popup class="post-popup" position="right" v-model="postDetailShow">
+      <post-detail
+        :postItemAndCategoryList="passDataToPostDetail()"
+      ></post-detail>
+    </van-popup>
   </div>
 </template>
 
 <script>
-import { aboutMe, removePost } from "../api/api";
+import { aboutMe, getTopicsList, removePost } from "../api/api";
 import { Dialog } from "vant";
 import { mapState } from "vuex";
 import GoBack from "./GoBack";
+import PostDetail from "./PostDetail";
 
 export default {
   name: "AboutMe",
   data() {
     return {
+      // 单个帖子 ( 用于传入详情页显示详情 )
+      postItem: {},
+      // 分类名字
+      postCategoryList: [],
+      // 骨架屏幕
+      skeletonLoading: true,
       // 下拉刷新状态
       isPullLoading: false,
       // 操作记录列表
@@ -122,6 +136,28 @@ export default {
     };
   },
   methods: {
+    // 开局先判断类别 (分类标签)
+    getPostCategoryList() {
+      getTopicsList().then((res) => {
+        res.rows.forEach((item) => {
+          this.postCategoryList.push(item);
+        });
+      });
+    },
+    // 显示帖子详情 (item 为当前帖子)
+    showPostDetail(item) {
+      // 显示详情页
+      this.postDetailShow = true;
+      this.postItem = item;
+      this.passDataToPostDetail();
+    },
+    // 页面传值 ( post-list -> postDetail )
+    passDataToPostDetail() {
+      return {
+        postItem: this.postItem,
+        postCategoryList: this.postCategoryList,
+      };
+    },
     // 下拉刷新
     onRefresh() {
       this.getAboutMeInfo();
@@ -171,14 +207,24 @@ export default {
   },
   created() {
     this.getAboutMeInfo();
+    this.getPostCategoryList();
   },
   computed: {
     ...mapState({
       userInfo: "userInfo",
     }),
+    postDetailShow: {
+      get() {
+        return this.$store.state.postDetailShow;
+      },
+      set(payload) {
+        this.$store.commit("setPostDetailShow", payload);
+      },
+    },
   },
   components: {
     GoBack,
+    PostDetail,
   },
 };
 </script>

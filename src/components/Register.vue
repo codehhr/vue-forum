@@ -108,7 +108,7 @@
       </a-form-item>
       <a-form-item v-bind="formItemLayout">
         <a-row :gutter="24">
-          <a-col :span="16">
+          <a-col :span="16" class="code-input">
             <a-input
               v-decorator="[
                 'code',
@@ -309,7 +309,8 @@ export default {
   margin-top: 10px;
   padding: 10px 40px;
   .get-code {
-    width: 100%;
+    margin: 0;
+    padding: 0 10px;
   }
   .register-form-btn {
     width: 100%;
@@ -321,5 +322,16 @@ export default {
     font-size: 1.1rem;
     text-align: right;
   }
+}
+</style>
+<style lang="less">
+.code-input {
+  width: 60% !important;
+  margin: 0 6px 0 11px;
+  padding: 0 !important;
+}
+.ant-col.ant-col-8 {
+  width: auto;
+  padding: 0 !important;
 }
 </style>

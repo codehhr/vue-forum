@@ -10,9 +10,7 @@ export default {
   name: "Animation",
   data() {
     return {
-      url:
-        // "https://www.51qianduan.com/uploadfile/article/1905/12/8418/index.html",
-        "https://codehhr.github.io/web/coderain/",
+      url: "https://codehhr.github.io/web/raindropsontheglass/",
     };
   },
   methods: {
@@ -36,7 +34,9 @@ export default {
     top: 10px;
     right: 10px;
     border: none;
-    background-color: transparent;
+    color: #aaaaaa;
+    background-color: #525763;
+    opacity: 0.68;
   }
   iframe {
     width: 100%;
@@ -44,7 +44,6 @@ export default {
   }
 }
 canvas {
-  // width: 100%;
   height: 100%;
 }
 </style>

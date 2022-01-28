@@ -10,7 +10,7 @@ export default {
   name: "Animation",
   data() {
     return {
-      url: "https://codehhr.github.io/web/raindropsontheglass/",
+      url: "https://codehhr.github.io/web/droplet/",
     };
   },
   methods: {
